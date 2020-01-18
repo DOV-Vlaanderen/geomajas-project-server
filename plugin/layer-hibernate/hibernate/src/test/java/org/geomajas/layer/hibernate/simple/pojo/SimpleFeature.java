@@ -23,7 +23,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-
 import org.locationtech.jts.geom.Geometry;
 
 /**

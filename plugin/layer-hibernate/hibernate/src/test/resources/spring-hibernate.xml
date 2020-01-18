@@ -19,10 +19,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<!-- DataSource Property -->
 	<bean id="testDataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-		<property name="url" value="jdbc:hsqldb:mem:baseball" />
+		<property name="driverClassName" value="org.h2.Driver" />
+		<property name="url" value="jdbc:h2:mem:basketball" />
 		<property name="username" value="sa" />
-		<property name="password" value="" />
+		<property name="password" value="sa" />
 	</bean>
 
 	<!-- Hibernate SessionFactory -->
