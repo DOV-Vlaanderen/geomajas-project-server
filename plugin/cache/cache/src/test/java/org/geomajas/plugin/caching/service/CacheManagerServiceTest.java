@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.spring.ThreadScopeContextHolder;
 import org.junit.After;

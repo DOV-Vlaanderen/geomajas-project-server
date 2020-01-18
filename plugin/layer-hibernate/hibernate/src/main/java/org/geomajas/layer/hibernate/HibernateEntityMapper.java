@@ -20,10 +20,9 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.entity.Entity;
 import org.geomajas.layer.entity.EntityCollection;
 import org.geomajas.layer.entity.EntityMapper;
-import org.hibernate.EntityMode;
 import org.hibernate.SessionFactory;
-import org.hibernate.engine.SessionFactoryImplementor;
-import org.hibernate.engine.SessionImplementor;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.ManyToOneType;
@@ -33,7 +32,7 @@ import org.hibernate.type.Type;
  * Hibernate based implementation of {@link EntityMapper} for the {@link HibernateLayer}.
  * <p/>
  *  Values are read/written according to the Hibernate access type.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class HibernateEntityMapper implements EntityMapper {
@@ -64,7 +63,7 @@ public class HibernateEntityMapper implements EntityMapper {
 
 	/**
 	 * Entity that provides access to a Hibernate entity.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 */
 	class HibernateEntity implements Entity {
@@ -115,16 +114,16 @@ public class HibernateEntityMapper implements EntityMapper {
 
 		@Override
 		public Entity getChild(String name) throws LayerException {
-			Object child = (object == null ? null : metadata.getPropertyValue(object, name, EntityMode.POJO));
+			Object child = (object == null ? null : metadata.getPropertyValue(object, name));
 			return child == null ? null : new HibernateEntity(child);
 		}
 
 		@Override
 		public void setChild(String name, Entity entity) throws LayerException {
 			if (entity != null) {
-				metadata.setPropertyValue(object, name, ((HibernateEntity) entity).getObject(), EntityMode.POJO);
+				metadata.setPropertyValue(object, name, ((HibernateEntity) entity).getObject());
 			} else {
-				metadata.setPropertyValue(object, name, null, EntityMode.POJO);
+				metadata.setPropertyValue(object, name, null);
 			}
 		}
 
@@ -133,11 +132,11 @@ public class HibernateEntityMapper implements EntityMapper {
 			Type type = metadata.getPropertyType(name);
 			if (type instanceof CollectionType) {
 				CollectionType ct = (CollectionType) type;
-				Collection coll = (Collection) metadata.getPropertyValue(object, name, EntityMode.POJO);
+				Collection coll = (Collection) metadata.getPropertyValue(object, name);
 				if (coll == null) {
 					// normally should not happen, hibernate instantiates it automatically
 					coll = (Collection) ct.instantiate(0);
-					metadata.setPropertyValue(object, name, coll, EntityMode.POJO);
+					metadata.setPropertyValue(object, name, coll);
 				}
 				String entityName = ct.getAssociatedEntityName((SessionFactoryImplementor) sessionFactory);
 				ClassMetadata childMetadata = sessionFactory.getClassMetadata(entityName);
@@ -149,7 +148,7 @@ public class HibernateEntityMapper implements EntityMapper {
 
 		@Override
 		public void setAttribute(String name, Object value) throws LayerException {
-			metadata.setPropertyValue(object, name, value, EntityMode.POJO);
+			metadata.setPropertyValue(object, name, value);
 		}
 
 		@Override
@@ -157,14 +156,14 @@ public class HibernateEntityMapper implements EntityMapper {
 			if (metadata.getIdentifierPropertyName().equals(name)) {
 				return getId(name);
 			}
-			return object == null ? null : metadata.getPropertyValue(object, name, EntityMode.POJO);
+			return object == null ? null : metadata.getPropertyValue(object, name);
 		}
 
 	}
 
 	/**
 	 * {@link EntityCollection} that provides access to a Hibernate collection.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 */
 	class HibernateEntityCollection implements EntityCollection {
@@ -217,7 +216,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			Object object = ((HibernateEntity) entity).getObject();
 			// assign parent to many-to-one
 			if (parentName != null) {
-				metadata.setPropertyValue(object, parentName, parent, EntityMode.POJO);
+				metadata.setPropertyValue(object, parentName, parent);
 			}
 			objects.add(object);
 		}
@@ -227,7 +226,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			Object object = ((HibernateEntity) entity).getObject();
 			// remove parent from many-to-one
 			if (parentName != null) {
-				metadata.setPropertyValue(object, parentName, null, EntityMode.POJO);
+				metadata.setPropertyValue(object, parentName, null);
 			}
 			objects.remove(object);
 		}

@@ -14,12 +14,12 @@ package org.geomajas.geometry;
 import org.geomajas.annotation.Api;
 import org.opengis.referencing.operation.MathTransform;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Extension of a {@link MathTransform} which allows getting the source and target CRSs and a
- * {@link com.vividsolutions.jts.geom.Geometry} with the transformable area.
+ * {@link org.locationtech.jts.geom.Geometry} with the transformable area.
  *
  * @author Joachim Van der Auwera
  * @since 1.8.0

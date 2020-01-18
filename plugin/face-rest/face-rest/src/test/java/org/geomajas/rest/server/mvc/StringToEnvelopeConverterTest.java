@@ -14,7 +14,7 @@ package org.geomajas.rest.server.mvc;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 public class StringToEnvelopeConverterTest {
 	@Test

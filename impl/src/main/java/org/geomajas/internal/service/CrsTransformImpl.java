@@ -22,12 +22,12 @@ import org.opengis.referencing.operation.Matrix;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Extension of a {@link MathTransform} which allows getting the source and target CRSs and a
- * {@link com.vividsolutions.jts.geom.Geometry} with the transformable area.
+ * {@link org.locationtech.jts.geom.Geometry} with the transformable area.
  *
  * @author Joachim Van der Auwera
  */

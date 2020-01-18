@@ -18,6 +18,7 @@ import java.util.Map;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -27,6 +28,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.core.ResolvableType;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.io.ProtocolResolver;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextLoader;
 import org.springframework.test.context.support.GenericXmlContextLoader;
@@ -35,11 +39,13 @@ public class MultiRefreshContextLoader implements ContextLoader {
 
 	private ContextLoader delegateLoader = new GenericXmlContextLoader();
 
-	public ApplicationContext loadContext(String... locations) throws Exception {
+	@Override
+    public ApplicationContext loadContext(String... locations) throws Exception {
 		return new MultiRefreshContext(locations);
 	}
 
-	public String[] processLocations(Class<?> clazz, String... locations) {
+	@Override
+    public String[] processLocations(Class<?> clazz, String... locations) {
 		return delegateLoader.processLocations(clazz, locations);
 	}
 
@@ -54,165 +60,205 @@ public class MultiRefreshContextLoader implements ContextLoader {
 			refresh();
 		}
 
-		public boolean containsBean(String name) {
+		@Override
+        public boolean containsBean(String name) {
 			return currentContext.containsBean(name);
 		}
 
-		public boolean containsBeanDefinition(String beanName) {
+		@Override
+        public boolean containsBeanDefinition(String beanName) {
 			return currentContext.containsBeanDefinition(beanName);
 		}
 
-		public boolean containsLocalBean(String name) {
+		@Override
+        public boolean containsLocalBean(String name) {
 			return currentContext.containsLocalBean(name);
 		}
 
-		public <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType) {
+		@Override
+        public <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType) {
 			return currentContext.findAnnotationOnBean(beanName, annotationType);
 		}
 
-		public String[] getAliases(String name) {
+		@Override
+        public String[] getAliases(String name) {
 			return currentContext.getAliases(name);
 		}
 
-		public AutowireCapableBeanFactory getAutowireCapableBeanFactory() throws IllegalStateException {
+		@Override
+        public AutowireCapableBeanFactory getAutowireCapableBeanFactory() throws IllegalStateException {
 			return currentContext.getAutowireCapableBeanFactory();
 		}
 
-		public <T> T getBean(Class<T> requiredType) throws BeansException {
+		@Override
+        public <T> T getBean(Class<T> requiredType) throws BeansException {
 			return currentContext.getBean(requiredType);
 		}
 
-		public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
+		@Override
+        public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
 			return currentContext.getBean(name, requiredType);
 		}
 
-		public Object getBean(String name, Object... args) throws BeansException {
+		@Override
+        public Object getBean(String name, Object... args) throws BeansException {
 			return currentContext.getBean(name, args);
 		}
 
-		public Object getBean(String name) throws BeansException {
+		@Override
+        public Object getBean(String name) throws BeansException {
 			return currentContext.getBean(name);
 		}
 
-		public int getBeanDefinitionCount() {
+		@Override
+        public int getBeanDefinitionCount() {
 			return currentContext.getBeanDefinitionCount();
 		}
 
-		public String[] getBeanDefinitionNames() {
+		@Override
+        public String[] getBeanDefinitionNames() {
 			return currentContext.getBeanDefinitionNames();
 		}
 
-		public String[] getBeanNamesForType(Class type, boolean includeNonSingletons, boolean allowEagerInit) {
+		@Override
+        public String[] getBeanNamesForType(Class type, boolean includeNonSingletons, boolean allowEagerInit) {
 			return currentContext.getBeanNamesForType(type, includeNonSingletons, allowEagerInit);
 		}
 
-		public String[] getBeanNamesForType(Class type) {
+		@Override
+        public String[] getBeanNamesForType(Class type) {
 			return currentContext.getBeanNamesForType(type);
 		}
 
-		public <T> Map<String, T> getBeansOfType(Class<T> type, boolean includeNonSingletons, boolean allowEagerInit)
+		@Override
+        public <T> Map<String, T> getBeansOfType(Class<T> type, boolean includeNonSingletons, boolean allowEagerInit)
 				throws BeansException {
 			return currentContext.getBeansOfType(type, includeNonSingletons, allowEagerInit);
 		}
 
-		public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
+		@Override
+        public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
 			return currentContext.getBeansOfType(type);
 		}
 
-		public Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType)
+		@Override
+        public Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType)
 				throws BeansException {
 			return currentContext.getBeansWithAnnotation(annotationType);
 		}
 
-		public ClassLoader getClassLoader() {
+		@Override
+        public ClassLoader getClassLoader() {
 			return currentContext.getClassLoader();
 		}
 
-		public String getDisplayName() {
+		@Override
+        public String getDisplayName() {
 			return currentContext.getDisplayName();
 		}
 
-		public String getId() {
+		@Override
+        public String getId() {
 			return currentContext.getId();
 		}
 
-		public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
+		@Override
+        public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
 			return currentContext.getMessage(resolvable, locale);
 		}
 
-		public String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException {
+		@Override
+        public String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException {
 			return currentContext.getMessage(code, args, locale);
 		}
 
-		public String getMessage(String code, Object[] args, String defaultMessage, Locale locale) {
+		@Override
+        public String getMessage(String code, Object[] args, String defaultMessage, Locale locale) {
 			return currentContext.getMessage(code, args, defaultMessage, locale);
 		}
 
-		public ApplicationContext getParent() {
+		@Override
+        public ApplicationContext getParent() {
 			return currentContext.getParent();
 		}
 
-		public BeanFactory getParentBeanFactory() {
+		@Override
+        public BeanFactory getParentBeanFactory() {
 			return currentContext.getParentBeanFactory();
 		}
 
-		public Resource getResource(String location) {
+		@Override
+        public Resource getResource(String location) {
 			return currentContext.getResource(location);
 		}
 
-		public Resource[] getResources(String locationPattern) throws IOException {
+		@Override
+        public Resource[] getResources(String locationPattern) throws IOException {
 			return currentContext.getResources(locationPattern);
 		}
 
-		public long getStartupDate() {
+		@Override
+        public long getStartupDate() {
 			return currentContext.getStartupDate();
 		}
 
-		public Class<?> getType(String name) throws NoSuchBeanDefinitionException {
+		@Override
+        public Class<?> getType(String name) throws NoSuchBeanDefinitionException {
 			return currentContext.getType(name);
 		}
 
-		public boolean isPrototype(String name) throws NoSuchBeanDefinitionException {
+		@Override
+        public boolean isPrototype(String name) throws NoSuchBeanDefinitionException {
 			return currentContext.isPrototype(name);
 		}
 
-		public boolean isSingleton(String name) throws NoSuchBeanDefinitionException {
+		@Override
+        public boolean isSingleton(String name) throws NoSuchBeanDefinitionException {
 			return currentContext.isSingleton(name);
 		}
 
-		public boolean isTypeMatch(String name, Class targetType) throws NoSuchBeanDefinitionException {
+		@Override
+        public boolean isTypeMatch(String name, Class targetType) throws NoSuchBeanDefinitionException {
 			return currentContext.isTypeMatch(name, targetType);
 		}
 
-		public void publishEvent(ApplicationEvent event) {
+		@Override
+        public void publishEvent(ApplicationEvent event) {
 			currentContext.publishEvent(event);
 		}
 
-		public void addApplicationListener(ApplicationListener listener) {
+		@Override
+        public void addApplicationListener(ApplicationListener listener) {
 			currentContext.addApplicationListener(listener);
 		}
 
-		public void addBeanFactoryPostProcessor(BeanFactoryPostProcessor beanFactoryPostProcessor) {
+		@Override
+        public void addBeanFactoryPostProcessor(BeanFactoryPostProcessor beanFactoryPostProcessor) {
 			currentContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor);
 		}
 
-		public void close() {
+		@Override
+        public void close() {
 			currentContext.close();
 		}
 
-		public ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException {
+		@Override
+        public ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException {
 			return currentContext.getBeanFactory();
 		}
 
-		public boolean isActive() {
+		@Override
+        public boolean isActive() {
 			return currentContext.isActive();
 		}
 
-		public boolean isRunning() {
+		@Override
+        public boolean isRunning() {
 			return currentContext.isRunning();
 		}
 
-		public void refresh() throws BeansException, IllegalStateException {
+		@Override
+        public void refresh() throws BeansException, IllegalStateException {
 			try {
 				currentContext = (ConfigurableApplicationContext) delegateLoader.loadContext(locations);
 				currentContext.getBeanFactory().registerSingleton("refreshContext", this);
@@ -221,26 +267,104 @@ public class MultiRefreshContextLoader implements ContextLoader {
 			}
 		}
 
-		public void registerShutdownHook() {
+		@Override
+        public void registerShutdownHook() {
 			currentContext.registerShutdownHook();
 		}
 
-		public void setId(String id) {
+		@Override
+        public void setId(String id) {
 			currentContext.setId(id);
 		}
 
-		public void setParent(ApplicationContext parent) {
+		@Override
+        public void setParent(ApplicationContext parent) {
 			currentContext.setParent(parent);
 		}
 
-		public void start() {
+		@Override
+        public void start() {
 			currentContext.start();
 		}
 
-		public void stop() {
+		@Override
+        public void stop() {
 			//currentContext.stop();
 		}
 
+        @Override
+        public String getApplicationName() {
+            return null;
+        }
+
+        @Override
+        public String[] getBeanNamesForType(ResolvableType type) {
+            // todo
+            return null;
+        }
+
+        @Override
+        public String[] getBeanNamesForType(ResolvableType type, boolean includeNonSingletons, boolean allowEagerInit) {
+            // todo
+            return null;
+        }
+
+        @Override
+        public String[] getBeanNamesForAnnotation(Class<? extends Annotation> annotationType) {
+            // todo
+            return null;
+        }
+
+        @Override
+        public <T> T getBean(Class<T> requiredType, Object... args) throws BeansException {
+            // TODO
+            return null;
+        }
+
+        @Override
+        public <T> ObjectProvider<T> getBeanProvider(Class<T> requiredType) {
+            // TODO
+            return null;
+        }
+
+        @Override
+        public <T> ObjectProvider<T> getBeanProvider(ResolvableType requiredType) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public boolean isTypeMatch(String name, ResolvableType typeToMatch) throws NoSuchBeanDefinitionException {
+            // TODO
+            return false;
+        }
+
+        @Override
+        public Class<?> getType(String name, boolean allowFactoryBeanInit) throws NoSuchBeanDefinitionException {
+            // TODO
+            return null;
+        }
+
+        @Override
+        public void publishEvent(Object event) {
+            // TODO
+        }
+
+        @Override
+        public void setEnvironment(ConfigurableEnvironment environment) {
+            // TODO
+        }
+
+        @Override
+        public ConfigurableEnvironment getEnvironment() {
+            // TODO
+            return null;
+        }
+
+        @Override
+        public void addProtocolResolver(ProtocolResolver resolver) {
+            // TODO Auto-generated method stub
+        }
 	}
 
 }

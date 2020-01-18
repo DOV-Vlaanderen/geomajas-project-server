@@ -16,7 +16,7 @@ import java.util.List;
 import org.geomajas.annotation.Api;
 import org.geomajas.layer.feature.InternalFeature;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Container for result of getFeatures in {@link org.geomajas.layer.VectorLayerService}.

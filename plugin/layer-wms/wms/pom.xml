@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-server-layer-wms-parent</artifactId>
-		<version>1.18.3</version>
+		<version>1.18.3-dov-1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
@@ -66,7 +66,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
-			<artifactId>gt-api</artifactId>
+			<artifactId>gt-opengis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
@@ -76,6 +76,18 @@
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-xml</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.geotools.xsd</groupId>
+            <artifactId>gt-xsd-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.xsd</groupId>
+            <artifactId>gt-xsd-gml2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.xsd</groupId>
+            <artifactId>gt-xsd-gml3</artifactId>
+        </dependency>
 
 		<!-- Dependencies for the Proxy controller -->
 		<dependency>

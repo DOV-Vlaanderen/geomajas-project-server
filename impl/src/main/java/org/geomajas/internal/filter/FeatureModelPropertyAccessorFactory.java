@@ -16,11 +16,10 @@ import java.util.regex.Pattern;
 import org.geomajas.internal.layer.feature.FeatureModelRegistry;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.FeatureModel;
-import org.geotools.factory.Hints;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
-
-import com.vividsolutions.jts.geom.Geometry;
+import org.geotools.util.factory.Hints;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * <p>
@@ -30,14 +29,15 @@ import com.vividsolutions.jts.geom.Geometry;
  * we can search for complex attributes in complex objects, still using GeoTools' default Filter.evaluate(Object)
  * function calls.
  * </p>
- * 
+ *
  * @author Pieter De Graef
  */
 public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFactory {
 
 	private static final PropertyAccessor ACCESSOR = new FeatureModelPropertyAccessor();
 
-	public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target, Hints hints) {
+	@Override
+    public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target, Hints hints) {
 		return ACCESSOR;
 	}
 
@@ -50,13 +50,15 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 
 		static final Pattern PROPERTY_PATTERN = Pattern.compile("((\\w+)(\\.|/))*((\\w+)|(@(\\w+:)?id))");
 
-		public boolean canHandle(Object object, String xpath, Class target) {
+		@Override
+        public boolean canHandle(Object object, String xpath, Class target) {
 			// there is no need to check against the schema at this point, we will fail later
 			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);
 			return (fm != null);
 		}
 
-		public Object get(Object object, String xpath, Class target) throws IllegalArgumentException {
+		@Override
+        public Object get(Object object, String xpath, Class target) throws IllegalArgumentException {
 			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);
 			if (null == fm) {
 				throw new IllegalArgumentException("Objects of type " + object.getClass().getName() +
@@ -79,7 +81,8 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 			}
 		}
 
-		public void set(Object object, String xpath, Object value, Class target) throws IllegalArgumentException {
+		@Override
+        public void set(Object object, String xpath, Object value, Class target) throws IllegalArgumentException {
 			throw new IllegalArgumentException("feature is immutable, only use property access for filtering");
 		}
 	}

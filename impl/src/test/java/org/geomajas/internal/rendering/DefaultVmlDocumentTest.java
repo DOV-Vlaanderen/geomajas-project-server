@@ -11,7 +11,7 @@
 
 package org.geomajas.internal.rendering;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 import org.geomajas.rendering.GraphicsDocument;
 import org.junit.Assert;
 import org.junit.Test;

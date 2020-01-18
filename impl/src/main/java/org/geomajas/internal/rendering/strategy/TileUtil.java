@@ -13,7 +13,7 @@ package org.geomajas.internal.rendering.strategy;
 
 import org.geomajas.layer.tile.TileCode;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * <p>

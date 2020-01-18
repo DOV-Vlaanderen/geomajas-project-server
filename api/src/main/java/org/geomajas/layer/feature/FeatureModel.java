@@ -17,7 +17,7 @@ import org.geomajas.annotation.UserImplemented;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.LayerException;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * A feature model provides sufficient information to generically create/read and update a feature. This level of

@@ -25,16 +25,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<!-- Hibernate SessionFactory -->
-	<bean id="testSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+	<bean id="testSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="testDataSource" />
-		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
-		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
+		<property name="configLocations" value="classpath:hibernate.cfg.xml" />
 	</bean>
 
 	<!-- enable the configuration of transactional behavior based on annotations -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="testSessionFactory" />
 	</bean>
 

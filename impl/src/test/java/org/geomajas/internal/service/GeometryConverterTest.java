@@ -25,15 +25,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * <p>
@@ -54,21 +54,21 @@ public class GeometryConverterTest {
 
 	private GeometryFactory factory;
 
-	private com.vividsolutions.jts.geom.Coordinate jtsC1;
+	private org.locationtech.jts.geom.Coordinate jtsC1;
 
-	private com.vividsolutions.jts.geom.Coordinate jtsC2;
+	private org.locationtech.jts.geom.Coordinate jtsC2;
 
-	private com.vividsolutions.jts.geom.Coordinate jtsC3;
+	private org.locationtech.jts.geom.Coordinate jtsC3;
 
-	private com.vividsolutions.jts.geom.Coordinate jtsC4;
+	private org.locationtech.jts.geom.Coordinate jtsC4;
 
-	private com.vividsolutions.jts.geom.Coordinate jtsC5;
+	private org.locationtech.jts.geom.Coordinate jtsC5;
 
-	private com.vividsolutions.jts.geom.Coordinate jtsC6;
+	private org.locationtech.jts.geom.Coordinate jtsC6;
 
-	private com.vividsolutions.jts.geom.Coordinate jtsC7;
+	private org.locationtech.jts.geom.Coordinate jtsC7;
 
-	private com.vividsolutions.jts.geom.Coordinate jtsC8;
+	private org.locationtech.jts.geom.Coordinate jtsC8;
 
 	private Coordinate dtoC1;
 
@@ -92,14 +92,14 @@ public class GeometryConverterTest {
 
 	public GeometryConverterTest() {
 		factory = new GeometryFactory(new PrecisionModel(), SRID);
-		jtsC1 = new com.vividsolutions.jts.geom.Coordinate(10.0, 10.0);
-		jtsC2 = new com.vividsolutions.jts.geom.Coordinate(20.0, 10.0);
-		jtsC3 = new com.vividsolutions.jts.geom.Coordinate(20.0, 20.0);
-		jtsC4 = new com.vividsolutions.jts.geom.Coordinate(10.0, 20.0);
-		jtsC5 = new com.vividsolutions.jts.geom.Coordinate(12.0, 12.0);
-		jtsC6 = new com.vividsolutions.jts.geom.Coordinate(12.0, 18.0);
-		jtsC7 = new com.vividsolutions.jts.geom.Coordinate(18.0, 18.0);
-		jtsC8 = new com.vividsolutions.jts.geom.Coordinate(18.0, 12.0);
+		jtsC1 = new org.locationtech.jts.geom.Coordinate(10.0, 10.0);
+		jtsC2 = new org.locationtech.jts.geom.Coordinate(20.0, 10.0);
+		jtsC3 = new org.locationtech.jts.geom.Coordinate(20.0, 20.0);
+		jtsC4 = new org.locationtech.jts.geom.Coordinate(10.0, 20.0);
+		jtsC5 = new org.locationtech.jts.geom.Coordinate(12.0, 12.0);
+		jtsC6 = new org.locationtech.jts.geom.Coordinate(12.0, 18.0);
+		jtsC7 = new org.locationtech.jts.geom.Coordinate(18.0, 18.0);
+		jtsC8 = new org.locationtech.jts.geom.Coordinate(18.0, 12.0);
 
 		dtoC1 = new Coordinate(10.0, 10.0);
 		dtoC2 = new Coordinate(20.0, 10.0);
@@ -333,13 +333,13 @@ public class GeometryConverterTest {
 	// Private methods for creating JTS geometries:
 	// -------------------------------------------------------------------------
 
-	private com.vividsolutions.jts.geom.Geometry createJtsEmpty(Class<?> clazz) {
+	private org.locationtech.jts.geom.Geometry createJtsEmpty(Class<?> clazz) {
 		if (Point.class.equals(clazz)) {
-			return factory.createPoint((com.vividsolutions.jts.geom.Coordinate) null);
+			return factory.createPoint((org.locationtech.jts.geom.Coordinate) null);
 		} else if (LineString.class.equals(clazz)) {
-			return factory.createLineString((com.vividsolutions.jts.geom.Coordinate[]) null);
+			return factory.createLineString((org.locationtech.jts.geom.Coordinate[]) null);
 		} else if (LinearRing.class.equals(clazz)) {
-			return factory.createLinearRing((com.vividsolutions.jts.geom.Coordinate[]) null);
+			return factory.createLinearRing((org.locationtech.jts.geom.Coordinate[]) null);
 		} else if (Polygon.class.equals(clazz)) {
 			return factory.createPolygon(null, null);
 		} else if (MultiPoint.class.equals(clazz)) {
@@ -358,38 +358,38 @@ public class GeometryConverterTest {
 	}
 
 	private LineString createJtsLineString() {
-		return factory.createLineString(new com.vividsolutions.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3, jtsC4 });
+		return factory.createLineString(new org.locationtech.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3, jtsC4 });
 	}
 
 	private LinearRing createJtsLinearRing() {
-		return factory.createLinearRing(new com.vividsolutions.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3, jtsC4,
+		return factory.createLinearRing(new org.locationtech.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3, jtsC4,
 				jtsC1 });
 	}
 
 	private Polygon createJtsPolygon() {
-		LinearRing shell = factory.createLinearRing(new com.vividsolutions.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3,
+		LinearRing shell = factory.createLinearRing(new org.locationtech.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3,
 				jtsC4, jtsC1 });
-		LinearRing hole = factory.createLinearRing(new com.vividsolutions.jts.geom.Coordinate[] { jtsC5, jtsC6, jtsC7,
+		LinearRing hole = factory.createLinearRing(new org.locationtech.jts.geom.Coordinate[] { jtsC5, jtsC6, jtsC7,
 				jtsC8, jtsC5 });
 		return factory.createPolygon(shell, new LinearRing[] { hole });
 	}
 
 	private MultiPoint createJtsMultiPoint() {
-		return factory.createMultiPoint(new com.vividsolutions.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3 });
+		return factory.createMultiPoint(new org.locationtech.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3 });
 	}
 
 	private MultiLineString createJtsMultiLineString() {
-		LineString l1 = factory.createLineString(new com.vividsolutions.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3,
+		LineString l1 = factory.createLineString(new org.locationtech.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3,
 				jtsC4 });
-		LineString l2 = factory.createLineString(new com.vividsolutions.jts.geom.Coordinate[] { jtsC5, jtsC6, jtsC7,
+		LineString l2 = factory.createLineString(new org.locationtech.jts.geom.Coordinate[] { jtsC5, jtsC6, jtsC7,
 				jtsC8 });
 		return factory.createMultiLineString(new LineString[] { l1, l2 });
 	}
 
 	private MultiPolygon createJtsMultiPolygon() {
-		LinearRing shell = factory.createLinearRing(new com.vividsolutions.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3,
+		LinearRing shell = factory.createLinearRing(new org.locationtech.jts.geom.Coordinate[] { jtsC1, jtsC2, jtsC3,
 				jtsC4, jtsC1 });
-		LinearRing hole = factory.createLinearRing(new com.vividsolutions.jts.geom.Coordinate[] { jtsC5, jtsC6, jtsC7,
+		LinearRing hole = factory.createLinearRing(new org.locationtech.jts.geom.Coordinate[] { jtsC5, jtsC6, jtsC7,
 				jtsC8, jtsC5 });
 		Polygon polygon1 = factory.createPolygon(shell, new LinearRing[] {});
 		Polygon polygon2 = factory.createPolygon(shell, new LinearRing[] { hole });

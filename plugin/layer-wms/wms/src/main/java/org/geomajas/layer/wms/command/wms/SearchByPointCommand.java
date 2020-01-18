@@ -10,7 +10,7 @@
  */
 package org.geomajas.layer.wms.command.wms;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 import org.geomajas.command.CommandHasRequest;
 import org.geomajas.layer.wms.command.dto.SearchByPointRequest;
 import org.geomajas.layer.wms.command.dto.SearchByPointResponse;

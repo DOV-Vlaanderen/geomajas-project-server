@@ -24,7 +24,7 @@ import org.geomajas.service.DtoConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.algorithm.ConvexHull;
+import org.locationtech.jts.algorithm.ConvexHull;
 
 /**
  * <p>

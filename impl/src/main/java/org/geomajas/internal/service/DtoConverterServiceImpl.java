@@ -28,9 +28,8 @@ import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.conversion.jts.GeometryConverterService;
-import org.geomajas.geometry.conversion.jts.JtsConversionException;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.vector.lazy.LazyAttribute;
@@ -59,20 +58,19 @@ import org.geomajas.layer.feature.attribute.UrlAttribute;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.service.DtoConverterService;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * Default implementation of DTO converter.
- * 
+ *
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  * @author Pieter De Graef
@@ -88,13 +86,14 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 	/**
 	 * Converts a DTO attribute into a generic attribute object.
-	 * 
+	 *
 	 * @param attribute
 	 *            The DTO attribute.
 	 * @return The server side attribute representation. As we don't know at this point what kind of object the
 	 *         attribute is (that's a problem for the <code>FeatureModel</code>), we return an <code>Object</code>.
 	 */
-	public Object toInternal(Attribute<?> attribute) throws GeomajasException {
+	@Override
+    public Object toInternal(Attribute<?> attribute) throws GeomajasException {
 		if (attribute instanceof PrimitiveAttribute<?>) {
 			return toPrimitiveObject((PrimitiveAttribute<?>) attribute);
 		} else if (attribute instanceof AssociationAttribute<?>) {
@@ -312,19 +311,20 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 	/**
 	 * Convert the server side feature to a DTO feature that can be sent to the client.
-	 * 
+	 *
 	 * @param feature
 	 *            The server-side feature representation.
 	 * @param featureIncludes
 	 *            Indicate which aspects of the should be included see {@link VectorLayerService}
 	 * @return Returns the DTO feature.
 	 */
-	public Feature toDto(InternalFeature feature, int featureIncludes) throws GeomajasException {
+	@Override
+    public Feature toDto(InternalFeature feature, int featureIncludes) throws GeomajasException {
 		if (feature == null) {
 			return null;
 		}
 		Feature dto = new Feature(feature.getId());
-		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES) != 0 && null != feature.getAttributes()) {
+		if ((featureIncludes & GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES) != 0 && null != feature.getAttributes()) {
 			// need to assure lazy attributes are converted to non-lazy attributes
 			Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 			for (Map.Entry<String, Attribute> entry : feature.getAttributes().entrySet()) {
@@ -336,13 +336,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			}
 			dto.setAttributes(attributes);
 		}
-		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_LABEL) != 0) {
+		if ((featureIncludes & GeomajasConstant.FEATURE_INCLUDE_LABEL) != 0) {
 			dto.setLabel(feature.getLabel());
 		}
-		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_GEOMETRY) != 0) {
+		if ((featureIncludes & GeomajasConstant.FEATURE_INCLUDE_GEOMETRY) != 0) {
 			dto.setGeometry(toDto(feature.getGeometry()));
 		}
-		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_STYLE) != 0 && null != feature.getStyleInfo()) {
+		if ((featureIncludes & GeomajasConstant.FEATURE_INCLUDE_STYLE) != 0 && null != feature.getStyleInfo()) {
 			dto.setStyleId(feature.getStyleInfo().getStyleId());
 		}
 		InternalFeatureImpl vFeature = (InternalFeatureImpl) feature;
@@ -354,7 +354,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 	@Override
 	public Feature toDto(InternalFeature feature) throws GeomajasException {
-		return toDto(feature, VectorLayerService.FEATURE_INCLUDE_ALL);
+		return toDto(feature, GeomajasConstant.FEATURE_INCLUDE_ALL);
 	}
 
 	@Override
@@ -378,7 +378,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	// -------------------------------------------------------------------------
 
 	@Override
-	public Geometry toDto(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException {
+	public Geometry toDto(org.locationtech.jts.geom.Geometry geometry) throws GeomajasException {
 		if (geometry == null) {
 			return null;
 		}
@@ -390,7 +390,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	}
 
 	@Override
-	public com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry) throws GeomajasException {
+	public org.locationtech.jts.geom.Geometry toInternal(Geometry geometry) throws GeomajasException {
 		if (geometry == null) {
 			return null;
 		}
@@ -407,7 +407,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 	/**
 	 * Convert a server-side tile representations into a DTO tile.
-	 * 
+	 *
 	 * @param tile
 	 *            The server-side representation of a tile.
 	 * @param crs
@@ -416,7 +416,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            Indicate which aspects of the should be included see {@link org.geomajas.layer.VectorLayerService}
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
-	public VectorTile toDto(InternalTile tile, String crs, int featureIncludes) throws GeomajasException {
+	@Override
+    public VectorTile toDto(InternalTile tile, String crs, int featureIncludes) throws GeomajasException {
 		return toDto(tile);
 	}
 
@@ -427,7 +428,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            The server-side representation of a tile.
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
-	public VectorTile toDto(InternalTile tile) throws GeomajasException {
+	@Override
+    public VectorTile toDto(InternalTile tile) throws GeomajasException {
 		if (null != tile) {
 			VectorTile dto = new VectorTile();
 			dto.setClipped(tile.isClipped());
@@ -449,36 +451,39 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 	/**
 	 * Convert a {@link Bbox} to a JTS envelope.
-	 * 
+	 *
 	 * @param bbox bounding box
 	 * @return JTS envelope
 	 */
-	public Envelope toInternal(Bbox bbox) {
+	@Override
+    public Envelope toInternal(Bbox bbox) {
 		return new Envelope(bbox.getX(), bbox.getMaxX(), bbox.getY(), bbox.getMaxY());
 	}
 
 	/**
 	 * Convert JTS envelope into a {@link Bbox}.
-	 * 
+	 *
 	 * @param envelope
 	 *            JTS envelope
 	 * @return Geomajas {@link Bbox}
 	 */
-	public Bbox toDto(Envelope envelope) {
+	@Override
+    public Bbox toDto(Envelope envelope) {
 		return new Bbox(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());
 	}
 
 	/**
 	 * Convert a layer type to a geometry class.
-	 * 
+	 *
 	 * @param layerType
 	 *            layer type
 	 * @return JTS class
 	 */
-	public Class<? extends com.vividsolutions.jts.geom.Geometry> toInternal(LayerType layerType) {
+	@Override
+    public Class<? extends org.locationtech.jts.geom.Geometry> toInternal(LayerType layerType) {
 		switch (layerType) {
 			case GEOMETRY:
-				return com.vividsolutions.jts.geom.Geometry.class;
+				return org.locationtech.jts.geom.Geometry.class;
 			case LINESTRING:
 				return LineString.class;
 			case MULTILINESTRING:
@@ -500,12 +505,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 	/**
 	 * Convert a geometry class to a layer type.
-	 * 
+	 *
 	 * @param geometryClass
 	 *            JTS geometry class
 	 * @return Geomajas layer type
 	 */
-	public LayerType toDto(Class<? extends com.vividsolutions.jts.geom.Geometry> geometryClass) {
+	@Override
+    public LayerType toDto(Class<? extends org.locationtech.jts.geom.Geometry> geometryClass) {
 		if (geometryClass == LineString.class) {
 			return LayerType.LINESTRING;
 		} else if (geometryClass == MultiLineString.class) {

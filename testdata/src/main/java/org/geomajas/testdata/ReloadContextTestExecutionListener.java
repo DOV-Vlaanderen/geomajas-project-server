@@ -13,6 +13,8 @@ package org.geomajas.testdata;
 import java.lang.reflect.Method;
 
 import org.geomajas.testdata.ReloadContext.ClassMode;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.annotation.DirtiesContext.HierarchyMode;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -20,12 +22,12 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 /**
  * Execution listener that forces a context reload before the test method is executed on methods/classes annotated with
  * {@link ReloadContext}.
- * 
+ *
  * WARNING: if used in conjunction with {@link DependencyInjectionTestExecutionListener}, the
  * {@link ReloadContextTestExecutionListener} should come first!
- * 
+ *
  * @author Jan De Moerloose
- * 
+ *
  */
 public class ReloadContextTestExecutionListener extends AbstractTestExecutionListener {
 
@@ -36,7 +38,7 @@ public class ReloadContextTestExecutionListener extends AbstractTestExecutionLis
 	 * in the test context to <code>true</code> .
 	 */
 	protected void reloadContext(TestContext testContext) {
-		testContext.markApplicationContextDirty();
+		testContext.markApplicationContextDirty(HierarchyMode.CURRENT_LEVEL);
 		testContext
 				.setAttribute(DependencyInjectionTestExecutionListener.REINJECT_DEPENDENCIES_ATTRIBUTE, Boolean.TRUE);
 	}

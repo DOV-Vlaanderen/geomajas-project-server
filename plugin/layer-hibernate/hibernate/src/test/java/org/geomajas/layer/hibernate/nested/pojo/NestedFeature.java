@@ -12,9 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 @Entity
 @Table(name = "nestedParentFeature")
@@ -31,7 +29,6 @@ public class NestedFeature {
 	@OneToMany(cascade = { CascadeType.ALL })
 	private List<NestedMany> many = new ArrayList<NestedMany>();
 
-	@Type(type = "org.hibernatespatial.GeometryUserType")
 	private Geometry geometry;
 
 	public Long getId() {
@@ -65,12 +62,12 @@ public class NestedFeature {
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
-	
+
 	public void updateOne(String oldText, String newText){
 		if(getOne().getTextAttr().equals(oldText)){
 			getOne().setTextAttr(newText);
 		} else {
-			
+
 		}
 	}
 

@@ -24,7 +24,7 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.VectorTile;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Converts between DTOs and server-side objects.
@@ -129,7 +129,7 @@ public interface DtoConverterService {
 	 * @return Returns a DTO type geometry, that is serializable.
 	 * @throws GeomajasException conversion failed
 	 */
-	Geometry toDto(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException;
+	Geometry toDto(org.locationtech.jts.geom.Geometry geometry) throws GeomajasException;
 
 	/**
 	 * Takes in a DTO geometry, and converts it into a JTS geometry.
@@ -139,7 +139,7 @@ public interface DtoConverterService {
 	 * @return Returns a JTS geometry.
 	 * @throws GeomajasException conversion failed
 	 */
-	com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry) throws GeomajasException;
+	org.locationtech.jts.geom.Geometry toInternal(Geometry geometry) throws GeomajasException;
 
 	// -------------------------------------------------------------------------
 	// Tile conversion:
@@ -203,7 +203,7 @@ public interface DtoConverterService {
 	 * @return JTS class or null if raster type
 	 * @since 1.9.0
 	 */
-	Class<? extends com.vividsolutions.jts.geom.Geometry> toInternal(LayerType layerType);
+	Class<? extends org.locationtech.jts.geom.Geometry> toInternal(LayerType layerType);
 
 	/**
 	 * Convert a geometry class to a layer type.
@@ -213,6 +213,6 @@ public interface DtoConverterService {
 	 * @return Geomajas layer type
 	 * @since 1.9.0
 	 */
-	LayerType toDto(Class<? extends com.vividsolutions.jts.geom.Geometry> geometryClass);
+	LayerType toDto(Class<? extends org.locationtech.jts.geom.Geometry> geometryClass);
 
 }

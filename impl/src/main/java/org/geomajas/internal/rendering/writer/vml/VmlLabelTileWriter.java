@@ -29,8 +29,8 @@ import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * Writer for tile labels.
@@ -93,10 +93,10 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 			if (pos == null) {
 				continue;
 			}
-			com.vividsolutions.jts.geom.Point p = factory.createPoint(pos);
-			com.vividsolutions.jts.geom.Point labelPos;
+			org.locationtech.jts.geom.Point p = factory.createPoint(pos);
+			org.locationtech.jts.geom.Point labelPos;
 			try {
-				labelPos = (com.vividsolutions.jts.geom.Point) transformer.transform(p);
+				labelPos = (org.locationtech.jts.geom.Point) transformer.transform(p);
 				String labelString = feature.getLabel();
 
 				// If the attribute has no value, continue with the next:

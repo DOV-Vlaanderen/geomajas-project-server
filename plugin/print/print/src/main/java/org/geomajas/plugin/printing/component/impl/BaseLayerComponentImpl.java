@@ -14,7 +14,7 @@ import org.geomajas.plugin.printing.component.BaseLayerComponent;
 import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.dto.BaseLayerComponentInfo;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Base class for layer components.

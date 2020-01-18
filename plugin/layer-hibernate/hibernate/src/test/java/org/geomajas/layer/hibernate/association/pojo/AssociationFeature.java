@@ -23,13 +23,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Hibernate test feature that uses many-to-one and one-to-many association attributes.
- * 
+ *
  * @author Pieter De Graef
  */
 @Entity
@@ -47,7 +45,6 @@ public class AssociationFeature {
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "feature")
 	private Set<OneToManyProperty> oneToMany;
 
-	@Type(type = "org.hibernatespatial.GeometryUserType")
 	@Column(name = "the_geom")
 	private Geometry geometry;
 

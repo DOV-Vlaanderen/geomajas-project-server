@@ -16,7 +16,7 @@ import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;

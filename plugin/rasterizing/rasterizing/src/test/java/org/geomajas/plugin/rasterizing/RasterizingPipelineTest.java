@@ -120,7 +120,7 @@ public class RasterizingPipelineTest {
 	@Test
 	public void testTrans()  throws Exception {
 		System.out.println(CRS.decode("EPSG:4283").toWKT());
-		geoService.transform(new com.vividsolutions.jts.geom.Coordinate(131.5,-27.5), "EPSG:4326", "EPSG:4283");
+		geoService.transform(new org.locationtech.jts.geom.Coordinate(131.5,-27.5), "EPSG:4326", "EPSG:4283");
 	}
 
 	@Test

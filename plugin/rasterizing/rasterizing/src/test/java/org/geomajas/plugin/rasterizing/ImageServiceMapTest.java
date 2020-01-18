@@ -5,7 +5,6 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
@@ -24,13 +23,14 @@ import org.geomajas.plugin.rasterizing.api.ImageService;
 import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.layer.GeometryDirectLayer;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.StyleConverterService;
 import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -114,12 +114,12 @@ public class ImageServiceMapTest {
 		mapInfo.setCrs("EPSG:4326");
 		mapRasterizingInfo.setScale(1);
 		mapRasterizingInfo.setTransparent(true);
-		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		mapInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, mapRasterizingInfo);
 		ClientVectorLayerInfo clientBeansPointLayerInfo = new ClientVectorLayerInfo();
 		clientBeansPointLayerInfo.setServerLayerId(layerBeansPoint.getId());
 		VectorLayerRasterizingInfo layerRasterizingInfo = new VectorLayerRasterizingInfo();
 		layerRasterizingInfo.setStyle(layerBeansPointStyleInfo);
-		clientBeansPointLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, layerRasterizingInfo);
+		clientBeansPointLayerInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, layerRasterizingInfo);
 		mapInfo.getLayers().add(clientBeansPointLayerInfo);
 		new MapAssert(mapInfo).assertEqualImage("onevector.png", writeImages, DELTA);
 	}
@@ -132,20 +132,20 @@ public class ImageServiceMapTest {
 		mapInfo.setCrs("EPSG:4326");
 		mapRasterizingInfo.setScale(1);
 		mapRasterizingInfo.setTransparent(true);
-		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		mapInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, mapRasterizingInfo);
 
 		ClientVectorLayerInfo cl1 = new ClientVectorLayerInfo();
 		cl1.setServerLayerId(layerBeansPoint.getId());
 		VectorLayerRasterizingInfo lr1 = new VectorLayerRasterizingInfo();
 		lr1.setStyle(layerBeansPointStyleInfo);
-		cl1.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr1);
+		cl1.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, lr1);
 		mapInfo.getLayers().add(cl1);
 
 		ClientVectorLayerInfo cl2 = new ClientVectorLayerInfo();
 		cl2.setServerLayerId(layerBeansMultiLine.getId());
 		VectorLayerRasterizingInfo lr2 = new VectorLayerRasterizingInfo();
 		lr2.setStyle(layerBeansMultiLineStyleInfo);
-		cl2.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr2);
+		cl2.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, lr2);
 		mapInfo.getLayers().add(cl2);
 		new MapAssert(mapInfo).assertEqualImage("twovector.png", writeImages, DELTA);
 	}
@@ -161,16 +161,16 @@ public class ImageServiceMapTest {
 		// increase dpi accordingly so labels stay the same size
 		mapRasterizingInfo.setDpi(96*5);
 		mapRasterizingInfo.setTransparent(true);
-		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		mapInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, mapRasterizingInfo);
 		ClientVectorLayerInfo clientBeansPointLayerInfo = new ClientVectorLayerInfo();
 		clientBeansPointLayerInfo.setServerLayerId(layerBeansPoint.getId());
 		VectorLayerRasterizingInfo layerRasterizingInfo = new VectorLayerRasterizingInfo();
 		layerRasterizingInfo.setStyle(layerBeansPointStyleInfo);
-		clientBeansPointLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, layerRasterizingInfo);
+		clientBeansPointLayerInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, layerRasterizingInfo);
 		mapInfo.getLayers().add(clientBeansPointLayerInfo);
 		new MapAssert(mapInfo).assertEqualImage("dpi.png", writeImages, DELTA);
 	}
-	
+
 	@Test
 	public void testGraphics2D() throws Exception {
 		ClientMapInfo mapInfo = new ClientMapInfo();
@@ -179,12 +179,12 @@ public class ImageServiceMapTest {
 		mapInfo.setCrs("EPSG:4326");
 		mapRasterizingInfo.setScale(1);
 		mapRasterizingInfo.setTransparent(true);
-		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		mapInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, mapRasterizingInfo);
 		ClientVectorLayerInfo clientBeansPointLayerInfo = new ClientVectorLayerInfo();
 		clientBeansPointLayerInfo.setServerLayerId(layerBeansPoint.getId());
 		VectorLayerRasterizingInfo layerRasterizingInfo = new VectorLayerRasterizingInfo();
 		layerRasterizingInfo.setStyle(layerBeansPointStyleInfo);
-		clientBeansPointLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, layerRasterizingInfo);
+		clientBeansPointLayerInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, layerRasterizingInfo);
 		mapInfo.getLayers().add(clientBeansPointLayerInfo);
 		BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
 		RenderingHints renderingHints = new Hints();
@@ -206,7 +206,7 @@ public class ImageServiceMapTest {
 		mapInfo.setCrs("EPSG:4326");
 		mapRasterizingInfo.setScale(1);
 		mapRasterizingInfo.setTransparent(true);
-		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		mapInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, mapRasterizingInfo);
 
 		ClientGeometryLayerInfo geo = new ClientGeometryLayerInfo();
 		Geometry point = new Geometry(Geometry.POINT, 4326, 5);
@@ -226,13 +226,13 @@ public class ImageServiceMapTest {
 		mapInfo.setCrs("EPSG:4326");
 		mapRasterizingInfo.setScale(2);
 		mapRasterizingInfo.setTransparent(true);
-		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		mapInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, mapRasterizingInfo);
 
 		ClientRasterLayerInfo cl1 = new ClientRasterLayerInfo();
 		cl1.setServerLayerId(layerBluemarble.getId());
 		RasterLayerRasterizingInfo rr1 = new RasterLayerRasterizingInfo();
 		rr1.setCssStyle("opacity:0.5");
-		cl1.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rr1);
+		cl1.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, rr1);
 		mapInfo.getLayers().add(cl1);
 		new MapAssert(mapInfo).assertEqualImage("oneraster.png", writeImages, DELTA);
 	}
@@ -246,7 +246,8 @@ public class ImageServiceMapTest {
 			this.map = map;
 		}
 
-		public void generateActual(OutputStream out) throws Exception {
+		@Override
+        public void generateActual(OutputStream out) throws Exception {
 			imageService.writeMap(out, map);
 		}
 

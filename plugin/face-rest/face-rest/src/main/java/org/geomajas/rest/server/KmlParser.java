@@ -10,16 +10,16 @@
  */
 package org.geomajas.rest.server;
 
-import org.geotools.kml.KML;
-import org.geotools.kml.KMLConfiguration;
-import org.geotools.xml.Encoder;
-
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.geotools.kml.KML;
+import org.geotools.kml.KMLConfiguration;
+import org.geotools.xsd.Encoder;
+
 /**
  * Parses and produces GeoJSON.
- * 
+ *
  * @author Oliver May
  *
  */

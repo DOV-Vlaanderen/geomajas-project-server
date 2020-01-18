@@ -21,7 +21,7 @@ import org.geomajas.geometry.Crs;
 import org.geomajas.layer.LayerException;
 import org.geomajas.service.GeoService;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Data object that stores some necessary values for TMS layers.

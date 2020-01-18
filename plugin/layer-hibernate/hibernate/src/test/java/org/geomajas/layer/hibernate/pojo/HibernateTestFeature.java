@@ -30,13 +30,12 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.hibernate.annotations.Type;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Hibernate test feature.
- * 
+ *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -73,7 +72,6 @@ public class HibernateTestFeature {
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "feature")
 	private Set<HibernateTestOneToMany> oneToMany = new HashSet<HibernateTestOneToMany>();
 
-	@Type(type = "org.hibernatespatial.GeometryUserType")
 	@Column(name = "the_geom")
 	private Geometry geometry;
 
@@ -97,7 +95,8 @@ public class HibernateTestFeature {
 
 	// Class specific functions:
 
-	public String toString() {
+	@Override
+    public String toString() {
 		return ReflectionToStringBuilder.toString(this);
 	}
 

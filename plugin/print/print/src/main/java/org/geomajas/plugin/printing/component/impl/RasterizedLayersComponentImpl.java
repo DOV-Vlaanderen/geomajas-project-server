@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Internal implementation of {@link org.geomajas.plugin.printing.component.BaseLayerComponent} for rendering all layers

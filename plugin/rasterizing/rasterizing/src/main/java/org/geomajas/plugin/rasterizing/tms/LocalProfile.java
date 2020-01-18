@@ -12,8 +12,8 @@ package org.geomajas.plugin.rasterizing.tms;
 
 import org.geomajas.plugin.rasterizing.layer.tile.TmsTileMetadata;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * A custom profile based on maximum bounds for level 0 and factor 2 scaling. The minimum tile size defines the length

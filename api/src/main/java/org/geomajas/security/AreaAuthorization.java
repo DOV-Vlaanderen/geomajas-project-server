@@ -14,7 +14,7 @@ package org.geomajas.security;
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Authorizations based on area.

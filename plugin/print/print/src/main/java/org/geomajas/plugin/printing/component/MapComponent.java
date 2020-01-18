@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Component representing a map.

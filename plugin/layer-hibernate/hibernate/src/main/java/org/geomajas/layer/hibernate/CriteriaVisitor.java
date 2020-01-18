@@ -22,7 +22,9 @@ import org.geomajas.service.FilterService;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.hibernatespatial.criterion.SpatialRestrictions;
+import org.hibernate.spatial.criterion.SpatialRestrictions;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
@@ -73,15 +75,12 @@ import org.opengis.temporal.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * <p>
  * FilterVisitor implementation for the HibernateLayer. This class transforms OpenGis filters into a Hibernate
  * criteria object. This is how the HibernateLayer is able to use OpenGis filters.
  * </p>
- * 
+ *
  * @author Jan De Moerloose
  * @author Pieter De Graef
  */
@@ -141,7 +140,8 @@ public class CriteriaVisitor implements FilterVisitor {
 	// -------------------------------------------------------------------------
 
 	/** {@inheritDoc} */
-	public Object visit(And filter, Object userData) {
+	@Override
+    public Object visit(And filter, Object userData) {
 		Criterion c = null;
 		for (Filter element : filter.getChildren()) {
 			if (c == null) {
@@ -284,7 +284,8 @@ public class CriteriaVisitor implements FilterVisitor {
 	}
 
 	/** {@inheritDoc} */
-	public Object visit(Contains filter, Object userData) {
+	@Override
+    public Object visit(Contains filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Contains filter, Object userData)");
 	}
 
@@ -492,7 +493,7 @@ public class CriteriaVisitor implements FilterVisitor {
 
 	/**
 	 * Get the property name from the expression.
-	 * 
+	 *
 	 * @param expression expression
 	 * @return property name
 	 */
@@ -510,7 +511,7 @@ public class CriteriaVisitor implements FilterVisitor {
 
 	/**
 	 * Get the literal value for an expression.
-	 * 
+	 *
 	 * @param expression expression
 	 * @return literal value
 	 */
@@ -523,7 +524,7 @@ public class CriteriaVisitor implements FilterVisitor {
 
 	/**
 	 * Go through the property name to see if it is a complex one. If it is, aliases must be declared.
-	 * 
+	 *
 	 * @param orgPropertyName
 	 *            The propertyName. Can be complex.
 	 * @param userData
@@ -564,7 +565,7 @@ public class CriteriaVisitor implements FilterVisitor {
 	/**
 	 * Literals from filters do not always have the right class (i.e. integer instead of long). This function can cast
 	 * those objects.
-	 * 
+	 *
 	 * @param literal
 	 *            The literal object that needs casting to the correct class.
 	 * @param propertyName

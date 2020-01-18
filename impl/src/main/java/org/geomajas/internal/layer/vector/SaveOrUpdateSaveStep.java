@@ -83,7 +83,7 @@ public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
 					if (layerInfo.isAllowEmptyGeometries()) {
 						// use empty geometry
 						LayerType layerType = layer.getLayerInfo().getLayerType();
-						com.vividsolutions.jts.geom.Geometry geometry = converterService.toInternal(
+						org.locationtech.jts.geom.Geometry geometry = converterService.toInternal(
 								new Geometry(layerType.getGeometryType(), featureModel.getSrid(), -1));
 						newFeature.setGeometry(geometry);
 						featureModel.setGeometry(feature, geometry);

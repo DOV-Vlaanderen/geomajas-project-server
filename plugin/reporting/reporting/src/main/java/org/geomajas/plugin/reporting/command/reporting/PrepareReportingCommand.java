@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.reporting.command.reporting;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import org.geomajas.command.CommandHasRequest;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;

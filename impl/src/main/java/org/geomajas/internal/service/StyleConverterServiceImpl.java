@@ -122,8 +122,6 @@ import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.Rule;
-import org.geotools.styling.SLDParser;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
@@ -132,10 +130,21 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UserLayer;
+import org.geotools.xml.styling.SLDParser;
+import org.geotools.xml.styling.SLDTransformer;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.IUnmarshallingContext;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.io.WKTWriter;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
@@ -147,19 +156,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTWriter;
-
 /**
  * Default implementation of {@link StyleConverterService}. Supports named layers and user styles only.
- * 
+ *
  * @author Jan De Moerloose
  */
 @Component
@@ -182,10 +181,10 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 
 	private static final String MARK_SQUARE = "square";
 	private static final String MARK_CIRCLE = "circle";
-	
+
 	private static final String ASSOCIATION_DELIMITER_SOURCE = "/";
 	private static final String ASSOCIATION_DELIMITER_TARGET = ".";
-	
+
 	private static final String MISSING_RESOURCE = "missing resource {}";
 
 	private StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
@@ -615,7 +614,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			throw new IllegalArgumentException("Unhandled type of SpatialOpsTypeInfo " + spatialOps);
 		}
 	}
-	
+
 	private Envelope toEnvelope(BoxTypeInfo box) throws LayerException {
 		if (box.ifCoordinates()) {
 			Coordinate[] coords = getCoordinates(box.getCoordinates());
@@ -752,7 +751,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	private String toPropertyName(String propertyName) {
 		return propertyName.replaceAll(ASSOCIATION_DELIMITER_SOURCE, ASSOCIATION_DELIMITER_TARGET);
 	}
-	
+
 	private String toComparison(ComparisonOpsTypeInfo coOps, FeatureInfo featureInfo) {
 		if (coOps instanceof BinaryComparisonOpTypeInfo) {
 			BinaryComparisonOpTypeInfo binary = (BinaryComparisonOpTypeInfo) coOps;
@@ -1023,16 +1022,17 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	protected void postConstruct() {
 		styleBuilder = new StyleBuilder(filterService.getFilterFactory());
 	}
-	
+
 	/**
 	 * A custom {@link ResourceLocator} that uses the {@link ResourceService} for URL location.
-	 * 
+	 *
 	 * @author Jan De Moerloose
-	 * 
+	 *
 	 */
 	class ResourceServiceBasedLocator implements ResourceLocator {
 
-		public URL locateResource(String uri) {
+		@Override
+        public URL locateResource(String uri) {
 			URL url = null;
 			try {
 				Resource resource = resourceService.find(uri);

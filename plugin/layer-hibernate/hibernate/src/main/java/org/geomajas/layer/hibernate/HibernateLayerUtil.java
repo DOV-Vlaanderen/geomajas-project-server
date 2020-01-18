@@ -16,14 +16,14 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.engine.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
 
 /**
  * General Hibernate ClassMetadata and SessionFactory provision. Package visibility only.
- * 
+ *
  * @author Pieter De Graef
  */
 class HibernateLayerUtil {
@@ -75,7 +75,7 @@ class HibernateLayerUtil {
 
 	/**
 	 * Retrieve the Hibernate ClassMetadata.
-	 * 
+	 *
 	 * @return hibernate meta data
 	 * @throws HibernateLayerException
 	 *             Throws an exception if the initialization of the meta data went wrong. In other words if the
@@ -90,7 +90,7 @@ class HibernateLayerUtil {
 
 	/**
 	 * Return the class of one of the properties of another class from which the Hibernate metadata is given.
-	 * 
+	 *
 	 * @param meta
 	 *            The parent class to search a property in.
 	 * @param propertyName
@@ -129,7 +129,7 @@ class HibernateLayerUtil {
 
 	/**
 	 * Return the Hibernate SessionFactory.
-	 * 
+	 *
 	 * @return session factory
 	 */
 	public SessionFactory getSessionFactory() {

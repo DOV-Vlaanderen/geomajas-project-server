@@ -11,7 +11,7 @@
 
 package org.geomajas.internal.layer.feature;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.internal.layer.vector.lazy.LazyAttribute;
 import org.geomajas.layer.LayerException;

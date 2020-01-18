@@ -18,7 +18,7 @@ import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.feature.FeatureModel;
 import org.opengis.filter.Filter;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * A layer which contains vector data.

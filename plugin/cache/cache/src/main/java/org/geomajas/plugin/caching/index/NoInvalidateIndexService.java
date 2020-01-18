@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.index;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import org.geomajas.plugin.caching.service.CacheIndexService;
 
 import java.util.ArrayList;

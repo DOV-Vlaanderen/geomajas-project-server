@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.geomajas.project</groupId>
 		<artifactId>geomajas-project-server</artifactId>
-		<version>1.18.3</version>
+		<version>1.18.3-dov-1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -66,7 +66,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 		<dependency>
@@ -89,8 +89,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
-			<artifactId>gt-api</artifactId>
+			<artifactId>gt-opengis</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-metadata</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-cql</artifactId>
@@ -111,7 +115,11 @@
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-referencing</artifactId>
 		</dependency>
-
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-xml</artifactId>
+        </dependency>
+		
 		<dependency>
 			<groupId>org.jboss</groupId>
 			<artifactId>jboss-serialization</artifactId>

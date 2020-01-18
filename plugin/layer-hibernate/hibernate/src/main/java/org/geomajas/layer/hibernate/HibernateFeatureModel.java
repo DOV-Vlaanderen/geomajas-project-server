@@ -28,19 +28,19 @@ import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.hibernate.HibernateEntityMapper.HibernateEntity;
 import org.geomajas.service.GeoService;
-import org.hibernate.engine.SessionImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.vividsolutions.jts.geom.Geometry;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * <p>
  * FeatureModel implementation for the HibernateLayer.
  * </p>
  * <p> Values are read/written according to the Hibernate access type.</p>
- * 
+ *
  * @author Jan De Moerloose
  * @author Pieter De Graef
  */
@@ -179,7 +179,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 
 	/**
 	 * A recursive getAttribute method. In case a one-to-many is passed, an array will be returned.
-	 * 
+	 *
 	 * @param feature The feature wherein to search for the attribute
 	 * @param name The attribute's full name. (can be attr1.attr2)
 	 * @return Returns the value. In case a one-to-many is passed along the way, an array will be returned.

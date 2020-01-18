@@ -11,8 +11,8 @@
 
 package org.geomajas.plugin.geocoder.service;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import junit.framework.Assert;
 import org.geomajas.service.GeoService;
 import org.junit.Test;

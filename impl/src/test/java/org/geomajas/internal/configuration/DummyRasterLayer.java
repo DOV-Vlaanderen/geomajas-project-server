@@ -11,7 +11,7 @@
 
 package org.geomajas.internal.configuration;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;

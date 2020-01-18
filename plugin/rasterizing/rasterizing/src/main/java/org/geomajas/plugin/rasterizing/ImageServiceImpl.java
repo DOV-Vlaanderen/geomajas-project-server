@@ -24,21 +24,22 @@ import org.geomajas.plugin.rasterizing.api.RasterException;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.util.factory.Hints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Default implementation of {@link ImageService}. Uses a pipeline to render the images.
- * 
+ *
  * @author Jan De Moerloose
  */
 @Component
@@ -54,13 +55,15 @@ public class ImageServiceImpl implements ImageService {
 	@Autowired
 	private PipelineService<RasterizingContainer> pipelineService;
 
-	public void writeMap(Graphics2D graphics, ClientMapInfo clientMapInfo) throws GeomajasException {
+	@Override
+    public void writeMap(Graphics2D graphics, ClientMapInfo clientMapInfo) throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		context.put(RasterizingPipelineCode.GRAPHICS_2D, graphics);
 		callPipeline(clientMapInfo, context, RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE);
 	}
 
-	public void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
+	@Override
+    public void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		RasterizingContainer container = callPipeline(clientMapInfo, context,
 				RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE);
@@ -73,7 +76,8 @@ public class ImageServiceImpl implements ImageService {
 		}
 	}
 
-	public void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
+	@Override
+    public void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		RasterizingContainer container = callPipeline(clientMapInfo, context,
 				RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_LEGEND_IMAGE);
@@ -90,7 +94,7 @@ public class ImageServiceImpl implements ImageService {
 			throws GeomajasException {
 		DefaultMapContext mapContext = new DefaultMapContext();
 		mapContext.setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
-		MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
+		MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
 		mapContext.setAreaOfInterest(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
 				mapContext.getCoordinateReferenceSystem()));
 		RenderingHints renderingHints = new Hints();

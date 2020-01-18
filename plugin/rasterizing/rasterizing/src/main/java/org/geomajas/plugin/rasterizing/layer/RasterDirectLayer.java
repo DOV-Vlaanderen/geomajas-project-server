@@ -12,7 +12,7 @@
 package org.geomajas.plugin.rasterizing.layer;
 
 import com.sun.media.jai.codec.ByteArraySeekableStream;
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;

@@ -11,8 +11,12 @@
 
 package org.geomajas.rest.server.mvc;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.RestException;
 import org.geomajas.security.SecurityManager;
@@ -28,6 +32,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -37,13 +43,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
@@ -70,7 +70,7 @@ public class RestControllerTest {
 	public void login() {
 		// assure security context is set
 		securityManager.createSecurityContext(null);
-		adapter = new AnnotationMethodHandlerAdapter();
+		adapter = new RequestMappingHandlerAdapter();
 	}
 
 	@After
@@ -112,7 +112,7 @@ public class RestControllerTest {
 		view.render(mav.getModel(), request, response);
 		response.flushBuffer();
 		Object json = new JSONParser().parse(response.getContentAsString());
-		String isodate = GeoJSONUtil.DATE_FORMAT.format(c.getTime());
+		String isodate = GeoJSONUtil.dateFormatter.format(c.getTime());
 		Assert.assertTrue(json instanceof JSONObject);
 		Assert.assertEquals("{\"type\":\"Feature\"," + "\"geometry\":{\"type\":\"MultiPolygon\","
 				+ "\"coordinates\":[[[[0.0,0.0],[1,0.0],[1,1],[0.0,1],[0.0,0.0]]]]}," + "\"properties\":{"

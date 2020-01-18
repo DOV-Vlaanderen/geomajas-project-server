@@ -14,7 +14,7 @@
  */
 package org.geomajas.layer.bean.custombean;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * @author Balder Van Camp

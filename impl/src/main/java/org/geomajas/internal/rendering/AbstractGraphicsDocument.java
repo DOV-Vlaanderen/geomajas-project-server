@@ -26,7 +26,7 @@ import org.geomajas.internal.util.WebSafeStringEncoder;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Abstract base class for {@link GraphicsDocument} implementations.

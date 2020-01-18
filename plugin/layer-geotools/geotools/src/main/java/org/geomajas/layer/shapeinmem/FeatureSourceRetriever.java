@@ -26,7 +26,7 @@ import org.geotools.data.wfs.WFSDataStore;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Both the {@link org.geomajas.layer.geotools.GeoToolsFeatureModel} and the

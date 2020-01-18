@@ -40,13 +40,13 @@ import org.geomajas.service.legend.DefaultLegendGraphicMetadata;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.TextSymbolizerInfo;
-import org.geotools.factory.Hints;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 import org.geotools.map.MapViewport;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.util.factory.Hints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Rendering service based on StreamingRenderer. To be refactored when StreamingRenderer supports DirectLayer.
- * 
+ *
  * @author Jan De Moerloose
  */
 @Component
@@ -75,12 +75,13 @@ public class RenderingServiceImpl implements RenderingService {
 	public int getThreadsPerCore() {
 		return threadsPerCore;
 	}
-	
+
 	public void setThreadsPerCore(int threadsPerCore) {
 		this.threadsPerCore = threadsPerCore;
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+    @SuppressWarnings("unchecked")
 	public RenderedImage paintLegend(MapContext mapContext) {
 		LegendBuilder builder = new LegendBuilder();
 		LegendRasterizingInfo legendRasterizingInfo = getLegendInfo(mapContext);
@@ -170,7 +171,8 @@ public class RenderingServiceImpl implements RenderingService {
 		return true;
 	}
 
-	public void paintMap(MapContext context, Graphics2D graphics, Map<Object, Object> hints) {
+	@Override
+    public void paintMap(MapContext context, Graphics2D graphics, Map<Object, Object> hints) {
 		List<RenderRequest> renderStack = new ArrayList<RenderRequest>();
 		VectorRenderRequest vectorRequest = null;
 		for (Layer layer : context.layers()) {
@@ -190,10 +192,11 @@ public class RenderingServiceImpl implements RenderingService {
 		}
 	}
 
-	public void paintMap(MapContext context, Graphics2D graphics) {
+	@Override
+    public void paintMap(MapContext context, Graphics2D graphics) {
 		paintMap(context, graphics, new HashMap<Object, Object>());
 	}
-	
+
 	@PostConstruct
 	public void postConstruct() {
 		int cpus = Runtime.getRuntime().availableProcessors();
@@ -207,9 +210,9 @@ public class RenderingServiceImpl implements RenderingService {
 
 	/**
 	 * An executable render request.
-	 * 
+	 *
 	 * @author Jan De Moerloose
-	 * 
+	 *
 	 */
 	public interface RenderRequest {
 
@@ -221,7 +224,7 @@ public class RenderingServiceImpl implements RenderingService {
 
 	/**
 	 * Request for {@link DirectLayer} rendering.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 */
 	public class DirectRenderRequest implements RenderRequest {
@@ -239,7 +242,8 @@ public class RenderingServiceImpl implements RenderingService {
 			this.layer = layer;
 		}
 
-		public void execute() {
+		@Override
+        public void execute() {
 			layer.draw(graphics, mapContext, mapContext.getViewport());
 		}
 
@@ -247,7 +251,7 @@ public class RenderingServiceImpl implements RenderingService {
 
 	/**
 	 * Request for rendering a map of vector layers.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 */
 	public class VectorRenderRequest implements RenderRequest {
@@ -268,7 +272,8 @@ public class RenderingServiceImpl implements RenderingService {
 			viewPort.setCoordinateReferenceSystem(context.getViewport().getCoordinateReferenceSystem());
 		}
 
-		public void execute() {
+		@Override
+        public void execute() {
 			StreamingRenderer renderer = new StreamingRenderer();
 			renderer.setContext(mapContext);
 			renderer.setThreadPool(threadPool);

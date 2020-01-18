@@ -22,13 +22,15 @@ import org.geomajas.internal.layer.feature.FeatureModelRegistry;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
@@ -40,23 +42,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * <p>
  * Utility class for creating ECQL filters. Make sure all arguments are correct before you use these
  * functions. This class uses the OpenGIS FilterFactory2 interface, which extends the OGC FilterFactory specification
  * with JTS geometry support.
  * </p>
- * 
+ *
  * @author Pieter De Graef
  */
 @Component
 public final class FilterServiceImpl implements FilterService {
 
 	private final Logger log = LoggerFactory.getLogger(FilterServiceImpl.class);
-	
+
 	private final IdReplacingVisitor idReplacer = new IdReplacingVisitor();
 
 	private static final FilterFactory2 FF;
@@ -229,7 +228,8 @@ public final class FilterServiceImpl implements FilterService {
 	}
 
 	/** @inheritDoc */
-	public Filter parseFilter(String filter) throws GeomajasException {
+	@Override
+    public Filter parseFilter(String filter) throws GeomajasException {
 		if (null == filter || filter.length() == 0) {
 			return createTrueFilter();
 		}
@@ -255,7 +255,7 @@ public final class FilterServiceImpl implements FilterService {
 	/**
 	 * {@link DuplicatingFilterVisitor} class that replaces the '@id' keyword by an ECQL compatible alternative for
 	 * parsing.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 */
 	private class IdReplacingVisitor extends DuplicatingFilterVisitor {

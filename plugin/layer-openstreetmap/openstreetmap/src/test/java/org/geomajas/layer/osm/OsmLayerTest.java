@@ -11,7 +11,7 @@
 
 package org.geomajas.layer.osm;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import junit.framework.Assert;
 
 import org.geomajas.geometry.Crs;

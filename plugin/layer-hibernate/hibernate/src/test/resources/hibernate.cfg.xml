@@ -15,7 +15,7 @@
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
-		<property name="hibernate.dialect">org.geomajas.layer.hibernate.HSQLSpatialDialect</property>
+		<property name="hibernate.dialect">org.hibernate.spatial.dialect.h2geodb.GeoDBDialect</property>
 
 		<!-- always recreate the db schema for a clean test setup -->
 		<property name="hibernate.hbm2ddl.auto">create-drop</property>

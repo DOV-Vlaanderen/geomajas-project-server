@@ -16,10 +16,10 @@ import org.geomajas.security.AreaAuthorization;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.FeatureAuthorization;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * Simple authorization class, allows everything to features with even id and nothing to features with odd id.

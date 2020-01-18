@@ -17,7 +17,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * <p>
@@ -99,14 +99,14 @@ public interface InternalTile extends Serializable {
 	void setBounds(Envelope bounds);
 
 	/**
-	 * Get features for this tile (contained {@link com.vividsolutions.jts.geom.Geometry} objects use map coordinates).
+	 * Get features for this tile (contained {@link org.locationtech.jts.geom.Geometry} objects use map coordinates).
 	 *
 	 * @return list of features
 	 */
 	List<InternalFeature> getFeatures();
 
 	/**
-	 * Set list of features for this tile (contained {@link com.vividsolutions.jts.geom.Geometry} objects use map
+	 * Set list of features for this tile (contained {@link org.locationtech.jts.geom.Geometry} objects use map
 	 * coordinates).
 	 *
 	 * @param features list of features

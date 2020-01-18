@@ -13,7 +13,7 @@ package org.geomajas.plugin.rasterizing.tms;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.plugin.rasterizing.layer.tile.TmsTileMetadata;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * The global-geodetic profile as defined in http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification.
@@ -45,8 +45,8 @@ public class GlobalGeodeticProfile implements TmsProfile {
 	}
 
 	@Override
-	public com.vividsolutions.jts.geom.Coordinate getOrigin() {
-		return new com.vividsolutions.jts.geom.Coordinate(-180, -90);
+	public org.locationtech.jts.geom.Coordinate getOrigin() {
+		return new org.locationtech.jts.geom.Coordinate(-180, -90);
 	}
 
 	@Override

@@ -20,8 +20,8 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.FeatureModel;
 import org.opengis.filter.Filter;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.FilterFactory;
 
 /**

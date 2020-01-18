@@ -20,9 +20,9 @@ import org.geomajas.service.DtoConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * <p>
@@ -53,7 +53,7 @@ public class SplitPolygonCommand implements CommandHasRequest<SplitPolygonReques
 	@Override
 	public void execute(SplitPolygonRequest request, SplitPolygonResponse response) throws Exception {
 		// convert to most accurate precision model
-		com.vividsolutions.jts.geom.Geometry jtsGeometry = converter.toInternal(request.getGeometry());
+		org.locationtech.jts.geom.Geometry jtsGeometry = converter.toInternal(request.getGeometry());
 		if (!(jtsGeometry instanceof Polygon)) {
 			throw new GeomajasException(ExceptionCode.UNEXPECTED_PROBLEM, "geometry has to be a Polygon");
 		}
@@ -66,8 +66,8 @@ public class SplitPolygonCommand implements CommandHasRequest<SplitPolygonReques
 		}
 		LineString preciseLine = (LineString) jtsGeometry;
 		int precision = polygon.getPrecisionModel().getMaximumSignificantDigits() - 1;
-		com.vividsolutions.jts.geom.Geometry bufferedLine = preciseLine.buffer(Math.pow(10.0, -precision));
-		com.vividsolutions.jts.geom.Geometry diff = polygon.difference(bufferedLine);
+		org.locationtech.jts.geom.Geometry bufferedLine = preciseLine.buffer(Math.pow(10.0, -precision));
+		org.locationtech.jts.geom.Geometry diff = polygon.difference(bufferedLine);
 
 		if (diff instanceof Polygon) {
 			response.setGeometries(new Geometry[] { converter.toDto(diff) });

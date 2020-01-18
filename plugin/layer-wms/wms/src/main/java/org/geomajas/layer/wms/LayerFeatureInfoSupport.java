@@ -10,7 +10,7 @@
  */
 package org.geomajas.layer.wms;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 import org.geomajas.annotation.FutureApi;
 import org.geomajas.annotation.UserImplemented;
 import org.geomajas.layer.LayerException;

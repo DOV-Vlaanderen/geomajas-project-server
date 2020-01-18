@@ -19,7 +19,7 @@ import org.geomajas.service.pipeline.AbstractPipelineInterceptor;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Abstract base class for pipeline interceptors that implement a cache cycle. Caches the security context.

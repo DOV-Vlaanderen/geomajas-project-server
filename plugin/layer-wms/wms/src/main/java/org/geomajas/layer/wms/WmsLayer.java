@@ -10,8 +10,20 @@
  */
 package org.geomajas.layer.wms;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.geomajas.annotation.Api;
@@ -41,10 +53,12 @@ import org.geomajas.security.SecurityContext;
 import org.geomajas.service.DispatcherUrlService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
-import org.geotools.GML;
-import org.geotools.GML.Version;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -53,22 +67,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
-
-import javax.annotation.PostConstruct;
-import javax.swing.text.html.HTML;
-import javax.xml.parsers.ParserConfigurationException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * <p>
@@ -90,7 +88,7 @@ import java.util.List;
  * This layer also supports BASIC and DIGEST authentication. To use this functionality, set the
  * <code>authentication</code> field.
  * </p>
- * 
+ *
  * @author Jan De Moerloose
  * @author Pieter De Graef
  * @author Oliver May
@@ -115,7 +113,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 			this.format = format;
 		}
 
-		public String toString() {
+		@Override
+        public String toString() {
 			return format;
 		}
 
@@ -143,7 +142,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	private String styles = "";
 
 	private List<Parameter> parameters;
-	
+
 	private boolean enableFeatureInfoSupport;
 
 	private RasterLayerInfo layerInfo;
@@ -159,11 +158,11 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	 */
 	@Deprecated
 	private WmsAuthentication authentication;
-	 
+
 	private LayerAuthentication layerAuthentication;
 
 	private boolean useProxy;
-	
+
 	private boolean useCache;
 
 	@Autowired
@@ -180,22 +179,23 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	@Autowired(required = false)
 	private CacheManagerService cacheManagerService;
-	
+
 	@Autowired
 	private SecurityContext securityContext;
 
 	/**
 	 * Return the layers identifier.
-	 * 
+	 *
 	 * @return layer id
 	 */
-	public String getId() {
+	@Override
+    public String getId() {
 		return id;
 	}
 
 	/**
 	 * Set the layer identifier.
-	 * 
+	 *
 	 * @param id
 	 *            layer id
 	 */
@@ -205,20 +205,22 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Return the layer info object.
-	 * 
+	 *
 	 * @since 1.7.1
 	 */
-	public RasterLayerInfo getLayerInfo() {
+	@Override
+    public RasterLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
 
 	/**
 	 * Get coordinate reference system for this layer.
-	 * 
+	 *
 	 * @return Coordinate reference system for this layer.
 	 * @deprecated use {@link org.geomajas.layer.LayerService#getCrs(org.geomajas.layer.Layer)}
 	 */
-	@Deprecated
+	@Override
+    @Deprecated
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -275,7 +277,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Set the layer configuration.
-	 * 
+	 *
 	 * @param layerInfo
 	 *            layer information
 	 * @throws LayerException
@@ -288,7 +290,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	}
 
 	/** {@inheritDoc}. */
-	public List<Feature> getFeaturesByLocation(Coordinate layerCoordinate, double layerScale, int pixelTolerance)
+	@Override
+    public List<Feature> getFeaturesByLocation(Coordinate layerCoordinate, double layerScale, int pixelTolerance)
 			throws LayerException {
 		if (!isEnableFeatureInfoSupport()) {
 			return Collections.emptyList();
@@ -317,10 +320,10 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 			switch (featureInfoFormat) {
 				case GML2:
-					features = getGmlFeatures(stream, Version.GML2);
+					features = getGmlFeatures(stream, new org.geotools.gml2.GMLConfiguration());
 					break;
 				case GML3:
-					features = getGmlFeatures(stream, Version.GML3);
+					features = getGmlFeatures(stream, new org.geotools.gml3.GMLConfiguration());
 					break;
 				case HTML:
 					features = getHtmlFeatures(url);
@@ -371,12 +374,14 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 		return features;
 	}
 
-	private List<Feature> getGmlFeatures(InputStream stream, Version version) throws IOException, SAXException,
+	private List<Feature> getGmlFeatures(InputStream stream, Configuration gml) throws IOException, SAXException,
 			ParserConfigurationException {
 		List<Feature> features = new ArrayList<Feature>();
-		GML gml = new GML(version);
-		FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(stream);
-		FeatureIterator<SimpleFeature> it = collection.features();
+        Parser parser = new Parser(gml);
+        parser.setStrict(false);
+
+        FeatureCollection<?, SimpleFeature> collection = (FeatureCollection<?, SimpleFeature>) parser.parse(stream);
+        FeatureIterator<SimpleFeature> it = collection.features();
 
 		while (it.hasNext()) {
 			features.add(toDto(it.next()));
@@ -409,7 +414,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Paints the specified bounds optimized for the specified scale in pixel/unit.
-	 * 
+	 *
 	 * @param targetCrs
 	 *            Coordinate reference system used for bounds
 	 * @param bounds
@@ -420,7 +425,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	 * @throws GeomajasException
 	 *             oops
 	 */
-	public List<RasterTile> paint(CoordinateReferenceSystem targetCrs, Envelope bounds, double scale)
+	@Override
+    public List<RasterTile> paint(CoordinateReferenceSystem targetCrs, Envelope bounds, double scale)
 			throws GeomajasException {
 		Envelope layerBounds = bounds;
 		double layerScale = scale;
@@ -542,7 +548,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Build the base part of the url (doesn't change for getMap or getFeatureInfo requests).
-	 * 
+	 *
 	 * @param targetUrl
 	 *            base url
 	 * @param width
@@ -635,7 +641,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 					Resolution upper = resolutions.get(i);
 					Resolution lower = resolutions.get(i + 1);
 					if (screenResolution <= upper.getResolution() && screenResolution >= lower.getResolution()) {
-						if ((upper.getResolution() - screenResolution) > 2 * (screenResolution - 
+						if ((upper.getResolution() - screenResolution) > 2 * (screenResolution -
 								lower.getResolution())) {
 							return lower;
 						} else {
@@ -703,7 +709,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Set the base URL to the WMS server.
-	 * 
+	 *
 	 * @param baseWmsUrl
 	 *            base URL for the WMS server
 	 * @since 1.7.1
@@ -719,7 +725,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Set file format to request.
-	 * 
+	 *
 	 * @param format
 	 *            file format. For allowed values, check your WMS server.
 	 * @since 1.7.1
@@ -731,7 +737,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Set WMS version to use.
-	 * 
+	 *
 	 * @param version
 	 *            WMS version. For allowed values, check your WMS server.
 	 * @since 1.7.1
@@ -743,7 +749,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Set the styles.
-	 * 
+	 *
 	 * @param styles
 	 *            styles. For allowed values, check your WMS server.
 	 * @since 1.7.1
@@ -755,7 +761,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Set additional parameters to include in all WMS <code>getMap</code> requests.
-	 * 
+	 *
 	 * @param parameters
 	 *            parameters. For possible keys and values, check your WMS server.
 	 * @since 1.7.1
@@ -767,7 +773,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Get the authentication object.
-	 * 
+	 *
 	 * @return authentication object
 	 * @deprecated use getLayerAuthentication
 	 */
@@ -785,7 +791,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	 * Note that there is still the option of adding a user name and password as HTTP parameters, as some WMS server
 	 * support. To do that, just add {@link #parameters}.
 	 * </p>
-	 * 
+	 *
 	 * @param authentication
 	 *            authentication object
 	 * @since 1.8.0
@@ -799,10 +805,11 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Get the authentication info for this layer.
-	 * 
+	 *
 	 * @return authentication info.
 	 */
-	public ProxyAuthentication getProxyAuthentication() {
+	@Override
+    public ProxyAuthentication getProxyAuthentication() {
 		// convert authentication to layerAuthentication so we only use one
 		// TODO Remove when removing deprecated authentication field.
 		if (layerAuthentication == null && authentication != null) {
@@ -828,7 +835,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	 * Note that there is still the option of adding a user name and password as HTTP parameters, as some WMS server
 	 * support. To do that, just add {@link #parameters}.
 	 * </p>
-	 * 
+	 *
 	 * @param layerAuthentication
 	 *            layerAuthentication object
 	 * @since 1.11.0
@@ -841,7 +848,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	/**
 	 * Set whether the WMS request should use a proxy. This is automatically done when the authentication object is set.
 	 * When the WMS request is proxied, the credentials and WMS base address are hidden from the client.
-	 * 
+	 *
 	 * @param useProxy
 	 *            true when request needs to use the proxy
 	 * @since 1.8.0
@@ -872,7 +879,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	 * @return true when request needs to be cached
 	 * @since 1.9.0
 	 */
-	@Api
+	@Override
+    @Api
 	public boolean isUseCache() {
 		return useCache;
 	}
@@ -880,7 +888,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	/**
 	 * Set whether the WMS layer should support feature info support. This allows to retrieve feature info from a raster
 	 * layer. This only makes sense if the WMS layer is based on some kind of feature store like a database.
-	 * 
+	 *
 	 * @param enableFeatureInfoSupport
 	 *            whether feature info support is enabled for this layer
 	 * @since 1.9.0
@@ -892,16 +900,17 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 	/**
 	 * Get whether the WMS layer should support feature info support.
-	 * 
+	 *
 	 * @return the enableFeatureInfoSupport true if feature info support is enabled
 	 */
-	public boolean isEnableFeatureInfoSupport() {
+	@Override
+    public boolean isEnableFeatureInfoSupport() {
 		return enableFeatureInfoSupport;
 	}
 
 	/**
 	 * Grid definition for a WMS layer. It is used internally in the WMS layer.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 * @author Pieter De Graef
 	 */
@@ -964,7 +973,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 	/**
 	 * Single resolution definition for a WMS layer. This class is used internally in the WMS layer, and therefore has
 	 * no public constructors.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 * @author Pieter De Graef
 	 */
@@ -980,7 +989,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport, ProxyLaye
 
 		/**
 		 * Constructor that immediately requires all fields.
-		 * 
+		 *
 		 * @param resolution
 		 *            The actual resolution value. This is the reverse of the scale.
 		 * @param level

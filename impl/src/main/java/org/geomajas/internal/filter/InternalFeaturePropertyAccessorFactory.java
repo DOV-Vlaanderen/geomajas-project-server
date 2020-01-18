@@ -20,19 +20,18 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
 import org.geomajas.layer.feature.attribute.OneToManyAttribute;
-import org.geotools.factory.Hints;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
-
-import com.vividsolutions.jts.geom.Geometry;
+import org.geotools.util.factory.Hints;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * {@link PropertyAccessorFactory} for accessing {@link InternalFeature} objects. This allows to evaluate Geotools
  * filters on internal Geomajas features. This factory is registered through the SPI mechanism (see
  * META-INF/services/org.geotools.filter.expression.PropertyAccessorFactory).
- * 
+ *
  * @author Jan De Moerloose
- * 
+ *
  */
 public class InternalFeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
@@ -44,7 +43,8 @@ public class InternalFeaturePropertyAccessorFactory implements PropertyAccessorF
 
 	private static final Pattern PROPERTY_PATTERN = Pattern.compile("((\\w+)(\\.|/))*(\\w+)");
 
-	@SuppressWarnings("rawtypes")
+	@Override
+    @SuppressWarnings("rawtypes")
 	public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target, Hints hints) {
 		return ACCESSOR;
 	}
@@ -59,20 +59,22 @@ public class InternalFeaturePropertyAccessorFactory implements PropertyAccessorF
 	 * <code>oneToMany[1]/stringAttr</code> : returns the nested primitive attribute <code>stringAttr</code> of the
 	 * second attribute value of one-to-many attribute <code>oneToMany</code></li>
 	 * </ul>
-	 * 
+	 *
 	 * @author Jan De Moerloose
-	 * 
+	 *
 	 */
 	private static final class InternalFeatureAccessor implements PropertyAccessor {
 
 		private static final String LEFT_INDEX_BRACKET = "[";
 
-		@SuppressWarnings("rawtypes")
+		@Override
+        @SuppressWarnings("rawtypes")
 		public boolean canHandle(Object object, String xpath, Class target) {
 			return object instanceof InternalFeature;
 		}
 
-		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@Override
+        @SuppressWarnings({ "rawtypes", "unchecked" })
 		public Object get(Object object, String xpath, Class target) throws IllegalArgumentException {
 			AssociationValue assoc = null;
 			if (object != null) {
@@ -137,7 +139,8 @@ public class InternalFeaturePropertyAccessorFactory implements PropertyAccessorF
 			}
 		}
 
-		@SuppressWarnings("rawtypes")
+		@Override
+        @SuppressWarnings("rawtypes")
 		public void set(Object object, String xpath, Object value, Class target) throws IllegalArgumentException {
 			// TODO: implement me...
 		}

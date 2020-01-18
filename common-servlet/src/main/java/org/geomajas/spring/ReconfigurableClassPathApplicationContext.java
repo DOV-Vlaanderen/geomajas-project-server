@@ -19,7 +19,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * A classpath application context that supports rollback after a refresh.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class ReconfigurableClassPathApplicationContext extends ClassPathXmlApplicationContext implements
@@ -29,7 +29,7 @@ public class ReconfigurableClassPathApplicationContext extends ClassPathXmlAppli
 
 	/**
 	 * Create a context for the specified location (string with multiple locations separated by white space or ,;).
-	 * 
+	 *
 	 * @param configLocation string containing configuration locations
 	 * @throws BeansException oops
 	 */
@@ -38,20 +38,22 @@ public class ReconfigurableClassPathApplicationContext extends ClassPathXmlAppli
 		setConfigLocation(configLocation);
 		refresh();
 		// only now we can add the listener !
-		addListener(new RollBackListener());
+		this.
+		addApplicationListener(new RollBackListener());
 		// but we missed the first event !
 		previousConfigLocations = getConfigLocations();
 	}
 
 	/**
 	 * Refresh this context with the specified configuration locations.
-	 * 
+	 *
 	 * @param configLocations
 	 *            list of configuration resources (see implementation for specifics)
 	 * @throws GeomajasException
 	 *             indicates a problem with the new location files (see cause)
 	 */
-	public void refresh(String[] configLocations) throws GeomajasException {
+	@Override
+    public void refresh(String[] configLocations) throws GeomajasException {
 		try {
 			setConfigLocations(configLocations);
 			refresh();
@@ -62,11 +64,12 @@ public class ReconfigurableClassPathApplicationContext extends ClassPathXmlAppli
 
 	/**
 	 * Roll back to the previous configuration.
-	 * 
+	 *
 	 * @throws GeomajasException
 	 *             indicates an unlikely problem with the rollback (see cause)
 	 */
-	public void rollback() throws GeomajasException {
+	@Override
+    public void rollback() throws GeomajasException {
 		try {
 			setConfigLocations(previousConfigLocations);
 			refresh();
@@ -77,16 +80,17 @@ public class ReconfigurableClassPathApplicationContext extends ClassPathXmlAppli
 
 	/**
 	 * Keeps a copy the last configLocation on stop.
-	 * 
+	 *
 	 * @author Jan De Moerloose
-	 * 
+	 *
 	 */
 	private class RollBackListener implements ApplicationListener<ContextRefreshedEvent> {
 
 		/**
 		 * we have a fresh working context, copy the locations.
 		 */
-		public void onApplicationEvent(ContextRefreshedEvent event) {
+		@Override
+        public void onApplicationEvent(ContextRefreshedEvent event) {
 			previousConfigLocations = getConfigLocations();
 		}
 	}

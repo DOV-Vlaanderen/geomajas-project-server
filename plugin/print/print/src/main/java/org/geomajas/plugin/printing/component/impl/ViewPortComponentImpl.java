@@ -21,7 +21,7 @@ import org.geomajas.plugin.printing.component.dto.ViewPortComponentInfo;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * A view port is a part the main map which is shown at a different scale. A

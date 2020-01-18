@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.geocoder.service;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import org.geomajas.annotation.Api;
 import org.geomajas.plugin.geocoder.api.CombineResultService;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;

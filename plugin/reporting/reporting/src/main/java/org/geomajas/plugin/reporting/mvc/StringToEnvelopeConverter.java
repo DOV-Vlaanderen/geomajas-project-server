@@ -13,7 +13,7 @@ package org.geomajas.plugin.reporting.mvc;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Converts a comma-separated string to an envelope.

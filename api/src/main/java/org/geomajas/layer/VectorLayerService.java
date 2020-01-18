@@ -24,7 +24,7 @@ import org.geomajas.layer.tile.TileMetadata;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Service which allows accessing data from a vector layer.

@@ -11,9 +11,9 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
 import junit.framework.Assert;
 import org.geomajas.internal.service.pipeline.PipelineContextImpl;
 import org.geomajas.service.pipeline.PipelineContext;

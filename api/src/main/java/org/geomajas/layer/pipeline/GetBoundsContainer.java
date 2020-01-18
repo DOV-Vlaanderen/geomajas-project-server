@@ -13,7 +13,7 @@ package org.geomajas.layer.pipeline;
 
 import org.geomajas.annotation.Api;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Container for result of getBounds in {@link org.geomajas.layer.VectorLayerService}.

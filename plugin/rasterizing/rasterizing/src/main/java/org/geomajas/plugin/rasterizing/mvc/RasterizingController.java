@@ -13,7 +13,7 @@ package org.geomajas.plugin.rasterizing.mvc;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.internal.layer.tile.InternalTileImpl;

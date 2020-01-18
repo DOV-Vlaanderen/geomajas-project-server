@@ -10,7 +10,7 @@
  */
 package org.geomajas.rest.server.mvc;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Crs;

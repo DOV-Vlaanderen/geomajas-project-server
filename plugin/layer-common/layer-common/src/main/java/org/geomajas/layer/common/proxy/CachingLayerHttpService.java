@@ -25,7 +25,7 @@ import org.geomajas.service.TestRecorder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * {@link LayerHttpService} with caching support. Be aware that caching bypasses security requirements. To avoid this,

@@ -19,7 +19,7 @@ import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.PageComponent;
 import org.geomajas.plugin.printing.component.TopDownVisitor;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Visitor that configures the page of a default print template. Configures map

@@ -10,20 +10,20 @@
  */
 package org.geomajas.rest.server;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.kml.KMLConfiguration;
-import org.geotools.xml.Parser;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.AttributeDescriptor;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.kml.KMLConfiguration;
+import org.geotools.xsd.Parser;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.type.AttributeDescriptor;
+
 /**
  * Parses and produces GeoJSON.
- * 
+ *
  * @author Oliver May
  *
  */

@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-server-layer-hibernate-parent</artifactId>
-		<version>1.18.3</version>
+		<version>1.18.3-dov-1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
@@ -29,30 +29,33 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.hibernatespatial</groupId>
+			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-spatial</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-		</dependency>
+<!--        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-cglib-repack</artifactId>
 		</dependency>
-
+-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
+			<version>5.2.0.RELEASE</version>
 		</dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
+            <version>5.2.0.RELEASE</version>
             <scope>test</scope>
         </dependency>
 
@@ -82,7 +85,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
-			<artifactId>gt-api</artifactId>
+			<artifactId>gt-opengis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
@@ -111,7 +114,8 @@
         </dependency>
 		<dependency>
 			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version><!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -124,6 +128,12 @@
 			<artifactId>geomajas-command</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.1-b11</version>
+            <scope>test</scope>
+        </dependency>		
 	</dependencies>
 
 	<build>

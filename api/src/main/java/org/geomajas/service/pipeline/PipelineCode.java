@@ -38,7 +38,7 @@ public interface PipelineCode {
 
 	/** Attribute name as {@link String}. */
 	String ATTRIBUTE_NAME_KEY = "attributeName"; 
-	/** Bounds as {@link com.vividsolutions.jts.geom.Envelope}. */
+	/** Bounds as {@link org.locationtech.jts.geom.Envelope}. */
 	String BOUNDS_KEY = "bounds"; 
 	/** CRS (as {@link org.geomajas.geometry.Crs}. */
 	String CRS_KEY = "crs"; 
@@ -74,7 +74,7 @@ public interface PipelineCode {
 	String SCALE_KEY = "scale"; 
 	/** Style as {@link org.geomajas.configuration.NamedStyleInfo}. */
 	String STYLE_KEY = "style"; 
-	/** Maximum extent for tile, {@link com.vividsolutions.jts.geom.Envelope}. */
+	/** Maximum extent for tile, {@link org.locationtech.jts.geom.Envelope}. */
 	String TILE_MAX_EXTENT_KEY = "tileMaxExtent"; 
 	/** Tile metadata as {@link org.geomajas.layer.tile.TileMetadata}. */
 	String TILE_METADATA_KEY = "tileMetadata";
