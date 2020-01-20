@@ -50,8 +50,6 @@
 
 	<modules>
 		<module>print</module>
-		<module>print-documentation</module>
-		<module>print-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -62,6 +60,16 @@
 					<name>m2e.version</name>
 				</property>
 			</activation>
+		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>print-documentation</module>
+                <module>print-javadoc</module>
+			</modules>
 		</profile>
 	</profiles>
 

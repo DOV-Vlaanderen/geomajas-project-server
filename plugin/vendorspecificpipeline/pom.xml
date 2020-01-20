@@ -35,8 +35,6 @@
 
 	<modules>
 		<module>vendorspecificpipeline</module>
-		<module>vendorspecificpipeline-documentation</module>
-		<module>vendorspecificpipeline-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -47,6 +45,16 @@
 					<name>m2e.version</name>
 				</property>
 			</activation>
+		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>vendorspecificpipeline-documentation</module>
+                <module>vendorspecificpipeline-javadoc</module>
+			</modules>
 		</profile>
 	</profiles>
 </project>

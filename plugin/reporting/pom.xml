@@ -24,8 +24,6 @@
 
 	<modules>
 		<module>reporting</module>
-		<module>reporting-documentation</module>
-		<module>reporting-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -36,6 +34,16 @@
 					<name>m2e.version</name>
 				</property>
 			</activation>
+		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>reporting-documentation</module>
+                <module>reporting-javadoc</module>
+			</modules>
 		</profile>
 	</profiles>
 </project>

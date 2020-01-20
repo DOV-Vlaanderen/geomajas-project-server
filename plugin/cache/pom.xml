@@ -37,8 +37,6 @@
 	<modules>
 		<module>cache</module>
 		<module>cache-infinispan</module>
-		<module>cache-documentation</module>
-		<module>cache-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -50,5 +48,15 @@
 				</property>
 			</activation>
 		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>cache-documentation</module>
+                <module>cache-javadoc</module>
+			</modules>
+		</profile>   
 	</profiles>
 </project>

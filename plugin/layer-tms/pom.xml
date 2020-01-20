@@ -35,8 +35,6 @@
 
 	<modules>
 		<module>tms</module>
-		<module>tms-documentation</module>
-		<module>tms-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -47,6 +45,15 @@
 					<name>m2e.version</name>
 				</property>
 			</activation>
+		</profile><profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>tms-documentation</module>
+                <module>tms-javadoc</module>
+			</modules>
 		</profile>
 	</profiles>
 </project>

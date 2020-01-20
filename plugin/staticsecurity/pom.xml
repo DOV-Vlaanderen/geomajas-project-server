@@ -46,8 +46,6 @@
 	<modules>
 		<module>staticsecurity</module>
 		<module>staticsecurity-ldap</module>
-		<module>staticsecurity-documentation</module>
-		<module>staticsecurity-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -58,6 +56,16 @@
 					<name>m2e.version</name>
 				</property>
 			</activation>
+		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>staticsecurity-documentation</module>
+                <module>staticsecurity-javadoc</module>
+			</modules>
 		</profile>
 	</profiles>
 </project>

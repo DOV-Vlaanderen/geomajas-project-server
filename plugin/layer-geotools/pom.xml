@@ -45,8 +45,6 @@
 
 	<modules>
 		<module>geotools</module>
-		<module>geotools-documentation</module>
-		<module>geotools-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -58,5 +56,15 @@
 				</property>
 			</activation>
 		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>geotools-documentation</module>
+                <module>geotools-javadoc</module>
+			</modules>
+		</profile>   
 	</profiles>
 </project>

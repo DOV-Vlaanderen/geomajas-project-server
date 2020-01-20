@@ -45,8 +45,6 @@
 
 	<modules>
 		<module>googlemaps</module>
-		<module>googlemaps-documentation</module>
-		<module>googlemaps-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -58,6 +56,16 @@
 				</property>
 			</activation>
 		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>googlemaps-documentation</module>
+                <module>googlemaps-javadoc</module>
+			</modules>
+		</profile>   
 	</profiles>
 
 </project>

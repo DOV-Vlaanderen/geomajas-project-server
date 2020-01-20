@@ -25,9 +25,6 @@
 
 	<modules>
 		<module>face-rest</module>
-		<module>face-rest-example</module>
-		<module>face-rest-documentation</module>
-		<module>face-rest-javadoc</module>
     </modules>
 
 	<profiles>
@@ -39,5 +36,16 @@
 				</property>
 			</activation>
 		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>face-rest-example</module>
+                <module>face-rest-documentation</module>
+                <module>face-rest-javadoc</module>
+			</modules>
+		</profile>   
 	</profiles>
 </project>

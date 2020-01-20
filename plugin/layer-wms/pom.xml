@@ -45,8 +45,6 @@
 
 	<modules>
 		<module>wms</module>
-		<module>wms-documentation</module>
-		<module>wms-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -57,6 +55,16 @@
 					<name>m2e.version</name>
 				</property>
 			</activation>
+		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>wms-documentation</module>
+                <module>wms-javadoc</module>
+			</modules>
 		</profile>
 	</profiles>
 

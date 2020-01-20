@@ -35,8 +35,6 @@
 
 	<modules>
 		<module>layer-common</module>
-		<module>layer-common-documentation</module>
-		<module>layer-common-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -48,5 +46,15 @@
 				</property>
 			</activation>
 		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>layer-common-documentation</module>
+                <module>layer-common-javadoc</module>
+			</modules>
+		</profile>  
 	</profiles>
 </project>

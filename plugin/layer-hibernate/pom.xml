@@ -45,8 +45,6 @@
 
 	<modules>
 		<module>hibernate</module>
-		<module>hibernate-documentation</module>
-		<module>hibernate-javadoc</module>
 	</modules>
 
 	<profiles>
@@ -58,6 +56,16 @@
 				</property>
 			</activation>
 		</profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>hibernate-documentation</module>
+                <module>hibernate-javadoc</module>
+			</modules>
+		</profile>      
 	</profiles>
 
 </project>

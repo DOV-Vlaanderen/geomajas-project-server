@@ -43,8 +43,6 @@
 		<module>common-servlet</module>
 		<module>command</module>
 		<module>testdata</module>
-		<module>documentation</module>
-		<module>javadoc</module>
 	</modules>
 
 	<profiles>
@@ -76,7 +74,17 @@
                 <maven.javadoc.skip>true</maven.javadoc.skip> <!--too many errors -->
                 <skipTests>true</skipTests> 
             </properties>
-        </profile>        
+        </profile>
+        <profile>
+			<id>docs</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+                <module>documentation</module>
+                <module>javadoc</module>
+			</modules>
+		</profile>
 	</profiles>
 
 	<dependencyManagement>
