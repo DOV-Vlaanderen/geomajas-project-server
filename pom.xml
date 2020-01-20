@@ -1023,6 +1023,27 @@
 		<geomajas-server-version-javassist>3.11.0.GA</geomajas-server-version-javassist>
 		<!--plugin dependencies-->
 		<server-version-maven-javadoc-plugin>2.9.1</server-version-maven-javadoc-plugin>
+
+        <!-- acd bamboo build -->
+        <acd.issueManagement.url>https://www.milieuinfo.be/jira</acd.issueManagement.url>
+        <acd.ciManagement.system>Bamboo</acd.ciManagement.system>
+        <acd.ciManagement.url>https://www.milieuinfo.be/bamboo</acd.ciManagement.url>
+        <acd.repository.url>https://www.milieuinfo.be/artifactory</acd.repository.url>
+        <acd.repository.snapshot.url>${acd.repository.url}/snapshot</acd.repository.snapshot.url>
+        <acd.repository.release.url>${acd.repository.url}/release</acd.repository.release.url>
+        <gn.schemas.version>3.5</gn.schemas.version>
+        <acd.scm.maven-url>scm:svn:https://svn.milieuinfo.be/productie/svn</acd.scm.maven-url>
 	</properties>
 
+    <distributionManagement>
+        <repository>
+          <id>release</id>
+          <url>${acd.repository.release.url}</url>
+        </repository>
+        <snapshotRepository>
+          <id>snapshot</id>
+          <url>${acd.repository.snapshot.url}</url>
+        </snapshotRepository>
+  </distributionManagement>
+  
 </project>
