@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Joachim Van der Auwera
  */
-@Component
+//@Component
 public class DependencyCheckPostProcessor {
 
 	/** Group name for recorder. */
