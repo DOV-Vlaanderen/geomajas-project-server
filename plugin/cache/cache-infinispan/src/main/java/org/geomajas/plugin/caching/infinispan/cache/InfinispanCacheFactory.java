@@ -11,6 +11,13 @@
 
 package org.geomajas.plugin.caching.infinispan.cache;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.layer.Layer;
 import org.geomajas.plugin.caching.cache.NoCacheCacheFactory;
@@ -31,13 +38,6 @@ import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Cache factory for creating infinispan caches.
@@ -68,7 +68,7 @@ public class InfinispanCacheFactory implements CacheFactory {
 
 	@Autowired
 	private ConfigurationService configurationService;
-	
+
 	/**
 	 * Set the location of the Infinispan configuration file.
 	 * <p/>
@@ -94,10 +94,10 @@ public class InfinispanCacheFactory implements CacheFactory {
 	public void setDefaultConfiguration(CacheInfo defaultConfiguration) {
 		this.defaultConfiguration = defaultConfiguration;
 	}
-	
+
 	/**
 	 * Sets a listener for all caches. Default listener is {@link InfinispanCacheListener}.
-	 * 
+	 *
 	 * @param listener
 	 */
 	public void setListener(Object listener) {
@@ -127,7 +127,7 @@ public class InfinispanCacheFactory implements CacheFactory {
 		manager.addListener(listener);
 
 		// cache for caching the cache configurations (hmmm, sounds a bit strange)
-		Map<String, Map<CacheCategory, CacheService>> cacheCache = 
+		Map<String, Map<CacheCategory, CacheService>> cacheCache =
 				new HashMap<String, Map<CacheCategory, CacheService>>();
 
 		// build default configuration
