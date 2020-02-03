@@ -118,7 +118,8 @@ public class InfinispanCacheFactory implements CacheFactory {
 		} else {
 			GlobalConfigurationBuilder builder = new GlobalConfigurationBuilder();
 			builder.globalJmxStatistics().allowDuplicateDomains(true);
-			manager = new DefaultCacheManager(builder.build());
+			Configuration cfg = new ConfigurationBuilder().build();
+			manager = new DefaultCacheManager(builder.build(), cfg);
 		}
 
 		if (listener == null) {
