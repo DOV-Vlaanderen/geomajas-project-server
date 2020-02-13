@@ -24,10 +24,9 @@
         http://www.springframework.org/schema/util
 		http://www.springframework.org/schema/util/spring-util-2.0.xsd">
  
-	<!-- we use the default BeanNameUrlHandlerMapping for mapping to controllers -->
+	<!-- we use the default BeanNameUrlHandlerMapping for mapping to controllers
 
 	<bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
-		<!-- need security  -->
 		<property name="interceptors">
 			<list>
 				<ref bean="securityInterceptor" />
@@ -37,7 +36,7 @@
 	</bean>
 
 	<bean id="securityInterceptor" class="org.geomajas.servlet.mvc.SecurityInterceptor"/>
-
+    -->
 	<!--  we need a view resolver -->
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
 
