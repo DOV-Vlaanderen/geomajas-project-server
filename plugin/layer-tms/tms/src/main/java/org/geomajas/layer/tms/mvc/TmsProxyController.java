@@ -49,12 +49,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Pieter De Graef
  * @author Oliver May
  */
-@Controller(TmsProxyController.MAPPING + "**")
+@Controller
+@RequestMapping("/" + TmsProxyController.MAPPING_NAME)
 public class TmsProxyController {
 
 	public static final String MAPPING_NAME = "tms-proxy";
 
-	public static final String MAPPING = "/" + MAPPING_NAME + "/";
+	public static final String MAPPING = "/";
 
 	private static final int ERROR_MESSAGE_X = 10;
 

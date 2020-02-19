@@ -48,7 +48,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Pieter De Graef
  * @author Oliver May
  */
-@Controller("/wms/**")
+@Controller
+@RequestMapping("/wms")
 public class WmsProxyController {
 
 	private static final int ERROR_MESSAGE_X = 10;
@@ -69,7 +70,7 @@ public class WmsProxyController {
 		this.httpService = httpService;
 	}
 
-	@RequestMapping(value = "/wms/**", method = RequestMethod.GET)
+	@RequestMapping(value = "/**", method = RequestMethod.GET)
 	public void getWms(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// Search for the WMS layer:
 		String layerId = parseLayerId(request);

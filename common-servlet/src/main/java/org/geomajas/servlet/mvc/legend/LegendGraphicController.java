@@ -42,7 +42,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Oliver May
  * 
  */
-@Controller("/legendgraphic/**")
+@Controller
+@RequestMapping("/legendgraphic")
 public class LegendGraphicController {
 
 	public static final String LEGENDGRAPHIC_VIEW_NAME = "legendGraphicView";
@@ -78,7 +79,7 @@ public class LegendGraphicController {
 	 * @throws GeomajasException
 	 *             when a style or rule does not exist or is not renderable
 	 */
-	@RequestMapping(value = "/legendgraphic", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView getGraphic(@RequestParam("layerId") String layerId,
 			@RequestParam(value = "styleName", required = false) String styleName,
 			@RequestParam(value = "ruleIndex", required = false) Integer ruleIndex,
@@ -228,7 +229,7 @@ public class LegendGraphicController {
 	 * @throws GeomajasException
 	 *             when a style or rule does not exist or is not renderable
 	 */
-	@RequestMapping(value = "/legendgraphic/{layerId}/{styleName}/{ruleIndex}.{format}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{layerId}/{styleName}/{ruleIndex}.{format}", method = RequestMethod.GET)
 	public ModelAndView getRuleGraphic(@PathVariable("layerId") String layerId,
 			@PathVariable("styleName") String styleName, @PathVariable("ruleIndex") Integer ruleIndex,
 			@PathVariable("format") String format, @RequestParam(value = "width", required = false) Integer width,
@@ -260,7 +261,7 @@ public class LegendGraphicController {
 	 * @throws GeomajasException
 	 *             when a style or rule does not exist or is not renderable
 	 */
-	@RequestMapping(value = "/legendgraphic/{layerId}/{styleName}/all.{format}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{layerId}/{styleName}/all.{format}", method = RequestMethod.GET)
 	public ModelAndView getAllRuleGraphic(@PathVariable("layerId") String layerId,
 			@PathVariable("styleName") String styleName, @PathVariable("format") String format,
 			@RequestParam(value = "width", required = false) Integer width,
@@ -292,7 +293,7 @@ public class LegendGraphicController {
 	 * @throws GeomajasException
 	 *             when a style or rule does not exist or is not renderable
 	 */
-	@RequestMapping(value = "/legendgraphic/{layerId}/{styleName}.{format}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{layerId}/{styleName}.{format}", method = RequestMethod.GET)
 	public ModelAndView getStyleGraphic(@PathVariable("layerId") String layerId,
 			@PathVariable("styleName") String styleName, @PathVariable("format") String format,
 			@RequestParam(value = "width", required = false) Integer width,
@@ -324,7 +325,7 @@ public class LegendGraphicController {
 	 * @throws GeomajasException
 	 *             when a style or rule does not exist or is not renderable
 	 */
-	@RequestMapping(value = "/legendgraphic/{layerId}.{format}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{layerId}.{format}", method = RequestMethod.GET)
 	public ModelAndView getLayerGraphic(@PathVariable("layerId") String layerId, @PathVariable("format") String format,
 			@RequestParam(value = "width", required = false) Integer width,
 			@RequestParam(value = "height", required = false) Integer height,

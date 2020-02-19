@@ -38,7 +38,8 @@
 	<bean id="securityInterceptor" class="org.geomajas.servlet.mvc.SecurityInterceptor"/>
 	<!--  we need a view resolver -->
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
-
+    <bean class="org.springframework.web.servlet.handler.SimpleServletHandlerAdapter"/>
+    
 	<context:component-scan base-package="org.geomajas.servlet"/>
 
 </beans>

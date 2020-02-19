@@ -49,7 +49,8 @@ import org.springframework.web.servlet.mvc.LastModified;
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  */
-@Controller("/resource/**")
+@Controller
+@RequestMapping("/resource")
 public class ResourceController implements LastModified, ServletContextAware {
 
 	private static final String RESOURCE_PREFIX = "/resource";
@@ -171,7 +172,7 @@ public class ResourceController implements LastModified, ServletContextAware {
 		return rawResourcePath;
 	}
 	
-	@RequestMapping(value = "/resource/**/*", method = RequestMethod.GET)
+    @RequestMapping(value = "/**/*", method = RequestMethod.GET)
 	public void getResource(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -315,6 +316,17 @@ public class ResourceController implements LastModified, ServletContextAware {
 	}
 
 	protected URL[] getRequestResourceUrls(String rawResourcePath, HttpServletRequest request)
+			throws MalformedURLException {
+		URL[] resources = getRequestResourceUrls2(rawResourcePath, request);
+		// try web context (prepending servlet path)
+		if (resources == null || resources.length == 0) {
+			rawResourcePath = request.getServletPath() + request.getPathInfo();
+			resources = getRequestResourceUrls2(rawResourcePath, request);
+		}
+		return resources;
+	}
+
+	protected URL[] getRequestResourceUrls2(String rawResourcePath, HttpServletRequest request)
 			throws MalformedURLException {
 		String appendedPaths = request.getParameter("appended");
 		// don't allow multiple resources if compression is off

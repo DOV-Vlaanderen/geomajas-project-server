@@ -49,12 +49,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
  */
-@Controller(RasterizingController.MAPPING + "**")
+@Controller
+@RequestMapping("/rasterizing")
 public class RasterizingController {
 
 	private final Logger log = LoggerFactory.getLogger(RasterizingController.class);
 
-	public static final String MAPPING = "/rasterizing/";
+	public static final String MAPPING = "/";
 
 	public static final String LAYER_MAPPING = MAPPING + "layer/";
 

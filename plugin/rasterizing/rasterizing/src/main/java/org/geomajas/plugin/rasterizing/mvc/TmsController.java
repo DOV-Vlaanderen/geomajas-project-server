@@ -83,16 +83,17 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @author Jan De Moerloose
  */
-@Controller(TmsController.MAPPING + "**")
+@Controller
+@RequestMapping("/tms")
 public class TmsController {
 
 	public static final int PROFILE_TILE_SIZE = 256;
 
 	private final Logger log = LoggerFactory.getLogger(TmsController.class);
 
-	public static final String MAPPING = "/tms/";
+	public static final String MAPPING = "/";
 
-	public static final String MAPPING_1_0_0 = "/tms/1.0.0";
+	public static final String MAPPING_1_0_0 = "/1.0.0";
 
 	@Autowired
 	private PipelineService<GetTileContainer> pipelineService;

@@ -70,7 +70,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * @author Jan De Moerloose
  * 
  */
-@Controller("/printing/**")
+@Controller
+@RequestMapping("/printing")
 public class PrintingController {
 
 	private final Logger log = LoggerFactory.getLogger(PrintingController.class);
@@ -108,7 +109,7 @@ public class PrintingController {
 
 	protected ObjectMapper objectMapper;
 
-	@RequestMapping(value = "/printing", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView printGet(@RequestParam("documentId") String documentId,
 			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE, required = false) String download,
 			@RequestParam(value = "name", defaultValue = "geomajas.pdf", required = false) String fileName,
@@ -123,7 +124,7 @@ public class PrintingController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/printing", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView printPost(
 			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE, required = false) String download,
 			@RequestParam(value = "name", defaultValue = "geomajas.pdf", required = false) String fileName,
