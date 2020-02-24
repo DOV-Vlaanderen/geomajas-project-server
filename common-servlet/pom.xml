@@ -40,7 +40,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -87,12 +86,10 @@
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>net.sourceforge.findbugs</groupId>
 			<artifactId>annotations</artifactId>
 		</dependency>
-
 	</dependencies>
 
 </project>
