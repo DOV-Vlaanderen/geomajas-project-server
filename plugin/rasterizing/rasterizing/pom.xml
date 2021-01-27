@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-svg-dom</artifactId>
-            <version>1.7</version>
+            <version>1.10</version>
         </dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
