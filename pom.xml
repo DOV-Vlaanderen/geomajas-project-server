@@ -560,13 +560,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-spatial</artifactId>
-				<version>${geomajas-server-version-hibernate-spatial}</version>
-			</dependency>
-			<!--this next dependency is absent from version 4.x onwards-->
-			<dependency>
-				<groupId>org.hibernatespatial</groupId>
-				<artifactId>hibernate-spatial-postgis</artifactId>
-				<version>${geomajas-server-version-hibernate-spatial}</version>
+				<version>${geomajas-server-version-hibernate}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -1009,24 +1003,22 @@
 		<!--general important dependencies-->
 		<geotools-version>21.0-dov-0.5</geotools-version>
 		<geotools-wfs-version>21.0-dov-0.5</geotools-wfs-version>
-		<spring-version>5.2.0.RELEASE</spring-version>
+		<spring-version>5.3.3</spring-version>
 
 		<!--geomajas dependencies-->
 		<geomajas-server-version-geomajas-geometry>1.3.0</geomajas-server-version-geomajas-geometry>
 		<geomajas-server-version-geomajas-profiling>1.0.0</geomajas-server-version-geomajas-profiling>
+
 		<!--hibernate dependencies-->
-		<geomajas-server-version-hibernate>5.4.0.Final</geomajas-server-version-hibernate>
-		<geomajas-server-version-hibernate-validator>6.0.18.Final</geomajas-server-version-hibernate-validator>
-		<geomajas-server-version-hibernate-spatial>5.4.0.Final</geomajas-server-version-hibernate-spatial>
+		<geomajas-server-version-hibernate>5.4.27.Final</geomajas-server-version-hibernate>
+		<geomajas-server-version-hibernate-validator>6.1.7.Final</geomajas-server-version-hibernate-validator>
 		<geomajas-server-version-hibernate-cglib-repack>2.1_3</geomajas-server-version-hibernate-cglib-repack>
+
 		<!-- db dependencies-->
 		<geodb-version>0.7</geodb-version>
 		<postgresql-version>42.2.8</postgresql-version>
 		<postgis-jdbc-version>2.2.1</postgis-jdbc-version>
 		<geomajas-server-version-hsqldb>2.2.8</geomajas-server-version-hsqldb>
-        <!--
-		<geomajas-server-version-infinispan>6.0.1.Final</geomajas-server-version-infinispan>
-        -->
         <geomajas-server-version-infinispan>9.4.16.Final</geomajas-server-version-infinispan>
 
 		<!--other dependencies-->

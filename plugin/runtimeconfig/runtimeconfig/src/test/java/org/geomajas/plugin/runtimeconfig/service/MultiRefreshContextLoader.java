@@ -34,6 +34,8 @@ import org.springframework.core.io.ProtocolResolver;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextLoader;
 import org.springframework.test.context.support.GenericXmlContextLoader;
+import org.springframework.core.metrics.ApplicationStartup;
+
 
 public class MultiRefreshContextLoader implements ContextLoader {
 
@@ -151,6 +153,34 @@ public class MultiRefreshContextLoader implements ContextLoader {
         public ClassLoader getClassLoader() {
 			return currentContext.getClassLoader();
 		}
+
+		@Override
+        public void setClassLoader(ClassLoader loader) {
+		}
+
+		@Override
+        public void setApplicationStartup(ApplicationStartup su) {
+ 
+        }
+
+		@Override
+        public ApplicationStartup getApplicationStartup() {
+            return new ApplicationStartup() {
+                public org.springframework.core.metrics.StartupStep start(String name) {
+                    return null;
+                }
+            };
+		}
+        
+        @Override
+        public <T> org.springframework.beans.factory.ObjectProvider<T> getBeanProvider(Class<T> requiredType, boolean allowEagerInit) {
+            return null;
+        }
+        
+        @Override
+        public <T> org.springframework.beans.factory.ObjectProvider<T> getBeanProvider(ResolvableType requiredType, boolean allowEagerInit)  {
+            return null;
+        }
 
 		@Override
         public String getDisplayName() {
