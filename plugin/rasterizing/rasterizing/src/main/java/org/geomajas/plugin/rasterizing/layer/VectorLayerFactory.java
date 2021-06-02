@@ -21,11 +21,13 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.sld.SymbolizerFilterVisitor;
 import org.geomajas.service.ConfigurationService;
@@ -40,7 +42,7 @@ import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.geotools.renderer.lite.MetaBufferEstimator;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
@@ -58,7 +60,7 @@ import org.locationtech.jts.geom.Envelope;
 
 /**
  * This factory creates a GeoTools layer that is capable of writing vector layers.
- * 
+ *
  * @author Jan De Moerloose
  */
 @Component
@@ -87,19 +89,21 @@ public class VectorLayerFactory implements LayerFactory {
 	/** Tolerance used to compare doubles for equality */
 	private static final double TOLERANCE = 1e-6;
 
-	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+	@Override
+    public boolean canCreateLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof ClientVectorLayerInfo;
 	}
 
-	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+	@Override
+    public Layer createLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
 		if (!(clientLayerInfo instanceof ClientVectorLayerInfo)) {
 			throw new IllegalArgumentException(
 					"VectorLayerFactory.createLayer() should only be called using ClientVectorLayerInfo");
 		}
 		ClientVectorLayerInfo vectorInfo = (ClientVectorLayerInfo) clientLayerInfo;
 		VectorLayerRasterizingInfo extraInfo = (VectorLayerRasterizingInfo) vectorInfo
-				.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY);
-		ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
+				.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
+		ReferencedEnvelope areaOfInterest = mapContext.getMaxBounds();
 		VectorLayer layer = configurationService.getVectorLayer(vectorInfo.getServerLayerId());
 		// need to clone the extra info object before changing it !
 		VectorLayerRasterizingInfo rasterizingInfo = cloneInfo(extraInfo);
@@ -159,7 +163,7 @@ public class VectorLayerFactory implements LayerFactory {
 		}
 		List<InternalFeature> features = vectorLayerService.getFeatures(vectorInfo.getServerLayerId(),
 				mapContext.getCoordinateReferenceSystem(), filter, extraInfo.getStyle(),
-				VectorLayerService.FEATURE_INCLUDE_ALL);
+				GeomajasConstant.FEATURE_INCLUDE_ALL);
 
 		// must convert to geotools features because StreamingRenderer does not work on objects
 		InternalFeatureCollection gtFeatures = new InternalFeatureCollection(layer,
@@ -207,19 +211,20 @@ public class VectorLayerFactory implements LayerFactory {
 		}
 	}
 
-	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+	@Override
+    public Map<String, Object> getLayerUserData(MapContent mapContext, ClientLayerInfo clientLayerInfo) {
 		Map<String, Object> userData = new HashMap<String, Object>();
 		VectorLayerRasterizingInfo extraInfo = (VectorLayerRasterizingInfo) clientLayerInfo
-				.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY);
+				.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
 		userData.put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return userData;
 	}
 
 	/**
 	 * Extension of {@link MetaBufferEstimator} that takes processes into account.
-	 * 
+	 *
 	 * @author Jan De Moerloose
-	 * 
+	 *
 	 */
 	protected class MyMetaBufferEstimator extends MetaBufferEstimator {
 
@@ -227,11 +232,12 @@ public class VectorLayerFactory implements LayerFactory {
 
 		private int preRenderBuffer;
 
-		public void visit(FeatureTypeStyle fts) {
-			Rule[] rules = fts.getRules();
+		@Override
+        public void visit(FeatureTypeStyle fts) {
+			List<Rule> rules = fts.rules();
 
-			for (int i = 0; i < rules.length; i++) {
-				Rule rule = rules[i];
+			for (int i = 0; i < rules.size(); i++) {
+				Rule rule = rules.get(i);
 				rule.accept(this);
 			}
 			if (fts.getTransformation() != null) {

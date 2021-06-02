@@ -26,13 +26,13 @@ import org.geomajas.service.ResourceService;
 import org.geomajas.service.StyleConverterService;
 import org.geomajas.sld.RuleInfo;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * This factory creates a GeoTools layer that is capable of writing world paintables.
- * 
+ *
  * @author Jan De Moerloose
  */
 @Component
@@ -50,11 +50,13 @@ public class WorldPaintableLayerFactory implements LayerFactory {
 	@Autowired
 	private GeoService geoService;
 
-	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+	@Override
+    public boolean canCreateLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof ClientWorldPaintableLayerInfo;
 	}
 
-	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+	@Override
+    public Layer createLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
 		if (!(clientLayerInfo instanceof ClientWorldPaintableLayerInfo)) {
 			throw new IllegalArgumentException(
 					"WorldPaintableLayerFactory.createLayer() should only be called" +
@@ -79,7 +81,8 @@ public class WorldPaintableLayerFactory implements LayerFactory {
 		return layer;
 	}
 
-	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+	@Override
+    public Map<String, Object> getLayerUserData(MapContent mapContext, ClientLayerInfo clientLayerInfo) {
 		Map<String, Object> userData = new HashMap<String, Object>();
 		ClientWorldPaintableLayerInfo layerInfo = (ClientWorldPaintableLayerInfo) clientLayerInfo;
 		userData.put(USERDATA_KEY_SHOWING, layerInfo.isShowing());

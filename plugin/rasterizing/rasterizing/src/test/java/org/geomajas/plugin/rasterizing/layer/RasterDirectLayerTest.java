@@ -9,13 +9,13 @@ import javax.imageio.ImageIO;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.DirectLayer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,10 +64,10 @@ public class RasterDirectLayerTest {
 		cl1.setServerLayerId(layerBluemarble.getId());
 		RasterLayerRasterizingInfo rr1 = new RasterLayerRasterizingInfo();
 		rr1.setCssStyle("opacity:0.75");
-		cl1.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rr1);
+		cl1.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, rr1);
 
-		DefaultMapContext mapContext = new DefaultMapContext();
-		mapContext.setCoordinateReferenceSystem(layerBluemarble.getCrs());
+		MapContent mapContext = new MapContent();
+		mapContext.getViewport().setCoordinateReferenceSystem(layerBluemarble.getCrs());
 		mapContext.getViewport().setCoordinateReferenceSystem(mapContext.getCoordinateReferenceSystem());
 		mapContext.getViewport().setScreenArea(new Rectangle(1024, 512));
 		mapContext.getViewport().setBounds(new ReferencedEnvelope(-180, 180, -90, 90, layerBluemarble.getCrs()));
@@ -80,15 +80,16 @@ public class RasterDirectLayerTest {
 
 		private DirectLayer layer;
 
-		private MapContext mapContext;
+		private MapContent mapContext;
 
-		public DirectLayerAssert(DirectLayer layer, MapContext mapContext) {
+		public DirectLayerAssert(DirectLayer layer, MapContent mapContext) {
 			super(IMAGE_CLASS_PATH);
 			this.layer = layer;
 			this.mapContext = mapContext;
 		}
 
-		public void generateActual(OutputStream out) throws Exception {
+		@Override
+        public void generateActual(OutputStream out) throws Exception {
 			Rectangle rect = mapContext.getViewport().getScreenArea();
 			BufferedImage image = new BufferedImage((int) rect.getWidth(), (int) rect.getHeight(),
 					BufferedImage.TYPE_4BYTE_ABGR);

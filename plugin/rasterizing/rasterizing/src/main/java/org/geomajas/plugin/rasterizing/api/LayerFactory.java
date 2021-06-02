@@ -19,12 +19,12 @@ import org.geomajas.annotation.UserImplemented;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.global.GeomajasException;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 
 /**
  * Factory that creates a renderable layer based on the metadata supplied. Typically, each layer class will have its own
  * factory. Use the {@link LayerFactoryService} component as an entry point for iterating over all configured factories.
- * 
+ *
  * @author Jan De Moerloose
  * @since 1.0.0
  */
@@ -56,31 +56,31 @@ public interface LayerFactory {
 
 	/**
 	 * Returns true if this factory is capable of creating layer instances for the specified metadata.
-	 * 
+	 *
 	 * @param mapContext the map context
 	 * @param clientLayerInfo the client layer metadata
 	 * @return true if we can create layer instances
 	 */
-	boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo);
+	boolean canCreateLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo);
 
 	/**
 	 * Creates a layer for the specified metadata.
-	 * 
+	 *
 	 * @param mapContext the map context
 	 * @param clientLayerInfo the client layer metadata
 	 * @return layer ready for rendering
 	 * @throws GeomajasException something went wrong
 	 */
-	Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException;
+	Layer createLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException;
 
 	/**
 	 * Retrieves the userdata for the specified metadata. Especially {@link LayerFactory.USERDATA_KEY_SHOWING} is set.
-	 * 
+	 *
 	 * @param mapContext the map context
 	 * @param clientLayerInfo the client layer metadata
 	 * @return the user data key values
 	 * @since 1.1.0
 	 */
-	Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo);
+	Map<String, Object> getLayerUserData(MapContent mapContext, ClientLayerInfo clientLayerInfo);
 }
 // @extract-end

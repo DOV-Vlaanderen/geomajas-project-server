@@ -25,12 +25,12 @@ import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.plugin.rasterizing.api.RenderingService;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.service.pipeline.PipelineContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Step which does the actual map rendering.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class RenderMapStep extends AbstractRasterizingStep {
@@ -38,8 +38,9 @@ public class RenderMapStep extends AbstractRasterizingStep {
 	@Autowired
 	private RenderingService renderingService;
 
-	public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
-		MapContext mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContext.class);
+	@Override
+    public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
+		MapContent mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContent.class);
 		RenderingHints renderingHints = context.get(RasterizingPipelineCode.RENDERING_HINTS, RenderingHints.class);
 		@SuppressWarnings("unchecked")
 		Map<Object, Object> rendererHints = context.get(RasterizingPipelineCode.RENDERER_HINTS, Map.class);

@@ -15,21 +15,21 @@ import java.util.Map;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.global.GeomajasException;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 
 /**
  * Service that acts as an entry point for creating renderable layers.
- * 
+ *
  * @author Jan De Moerloose
  * @author Oliver May
  * @since 1.0.0
- * 
+ *
  */
 public interface LayerFactoryService {
 
 	/**
 	 * Creates a layer for the specified metadata.
-	 * 
+	 *
 	 * @param mapContext
 	 *            the map context
 	 * @param clientLayerInfo
@@ -38,11 +38,11 @@ public interface LayerFactoryService {
 	 * @throws GeomajasException
 	 *             oops, something went wrong
 	 */
-	Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException;
+	Layer createLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException;
 
 	/**
 	 * Retrieves the userdata for the specified metadata. Especially {@link LayerFactory.USERDATA_KEY_SHOWING} is set.
-	 * 
+	 *
 	 * @param mapContext
 	 *            the map context
 	 * @param clientLayerInfo
@@ -52,6 +52,6 @@ public interface LayerFactoryService {
 	 *             oops, something went wrong
 	 * @since 1.1.0
 	 */
-	Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo)
+	Map<String, Object> getLayerUserData(MapContent mapContext, ClientLayerInfo clientLayerInfo)
 			throws GeomajasException;
 }

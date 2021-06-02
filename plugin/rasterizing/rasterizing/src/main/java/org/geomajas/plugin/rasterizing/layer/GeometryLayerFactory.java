@@ -26,14 +26,14 @@ import org.geomajas.service.StyleConverterService;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.geotools.styling.Style;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * This factory creates a GeoTools layer that is capable of writing geometries.
- * 
+ *
  * @author Jan De Moerloose
  */
 @Component
@@ -45,11 +45,13 @@ public class GeometryLayerFactory implements LayerFactory {
 	@Autowired
 	private DtoConverterService converterService;
 
-	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+	@Override
+    public boolean canCreateLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof ClientGeometryLayerInfo;
 	}
 
-	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+	@Override
+    public Layer createLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
 		if (!(clientLayerInfo instanceof ClientGeometryLayerInfo)) {
 			throw new IllegalArgumentException(
 					"GeometryLayerFactory.createLayer() should only be called using ClientGeometryLayerInfo");
@@ -74,7 +76,8 @@ public class GeometryLayerFactory implements LayerFactory {
 		return layer;
 	}
 
-	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+	@Override
+    public Map<String, Object> getLayerUserData(MapContent mapContext, ClientLayerInfo clientLayerInfo) {
 		Map<String, Object> userData = new HashMap<String, Object>();
 		ClientGeometryLayerInfo layerInfo = (ClientGeometryLayerInfo) clientLayerInfo;
 		userData.put(USERDATA_KEY_SHOWING, layerInfo.isShowing());

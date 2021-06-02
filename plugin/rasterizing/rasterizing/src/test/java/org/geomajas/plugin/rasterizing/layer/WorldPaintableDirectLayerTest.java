@@ -12,6 +12,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.plugin.rasterizing.command.dto.ClientWorldPaintableLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.plugin.rasterizing.command.dto.WorldEllipseInfo;
 import org.geomajas.plugin.rasterizing.command.dto.WorldGeometryInfo;
 import org.geomajas.plugin.rasterizing.command.dto.WorldImageInfo;
@@ -26,9 +27,8 @@ import org.geomajas.sld.TextSymbolizerInfo;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.DirectLayer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IUnmarshallingContext;
@@ -57,11 +57,11 @@ public class WorldPaintableDirectLayerTest {
 	private boolean writeImages = false;
 
 	private static final double DELTA = 1E-6;
-	
+
 	@Qualifier("WorldPaintableDirectLayerTest.path")
 	@Autowired
 	private String imagePath;
-	
+
 	private static int size = 400;
 
 	@Test
@@ -81,10 +81,10 @@ public class WorldPaintableDirectLayerTest {
 		mapRasterizingInfo.setBounds(new Bbox(0, 0, size, size));
 		mapRasterizingInfo.setScale(1);
 		mapRasterizingInfo.setTransparent(true);
-		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		mapInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, mapRasterizingInfo);
 
-		DefaultMapContext mapContext = new DefaultMapContext();
-		mapContext.setCoordinateReferenceSystem(geoService.getCrs2("EPSG:4326"));
+		MapContent mapContext = new MapContent();
+		mapContext.getViewport().setCoordinateReferenceSystem(geoService.getCrs2("EPSG:4326"));
 		mapContext.getViewport().setBounds(
 				new ReferencedEnvelope(0, size, 0, size, mapContext.getCoordinateReferenceSystem()));
 		mapContext.getViewport().setCoordinateReferenceSystem(mapContext.getCoordinateReferenceSystem());
@@ -100,23 +100,23 @@ public class WorldPaintableDirectLayerTest {
 		WorldRectangleInfo rect = new WorldRectangleInfo();
 		rect.setBbox(new Bbox(50, 60, 30, 60));
 		rect.setGeometrySymbolizerInfo(toStyle("" +
-				"          <PolygonSymbolizer>\n" + 
-				"            <Fill>\n" + 
-				"              <CssParameter name=\"fill\">#4030FF</CssParameter>\n" + 
-				"            </Fill>\n" + 
-				"            <Stroke>\n" + 
-				"              <CssParameter name=\"stroke\">#000000</CssParameter>\n" + 
-				"              <CssParameter name=\"stroke-width\">4</CssParameter>    \n" + 
-				"            </Stroke>\n" + 
-				"          </PolygonSymbolizer>\n" 
+				"          <PolygonSymbolizer>\n" +
+				"            <Fill>\n" +
+				"              <CssParameter name=\"fill\">#4030FF</CssParameter>\n" +
+				"            </Fill>\n" +
+				"            <Stroke>\n" +
+				"              <CssParameter name=\"stroke\">#000000</CssParameter>\n" +
+				"              <CssParameter name=\"stroke-width\">4</CssParameter>    \n" +
+				"            </Stroke>\n" +
+				"          </PolygonSymbolizer>\n"
 				));
 		rect.setLabel("rectangle");
 		rect.setLabelSymbolizerInfo((TextSymbolizerInfo)toStyle("" +
-				"          <TextSymbolizer>\n" + 
-				"            <Font />\n" + 
-				"            <Fill>\n" + 
-				"              <CssParameter name=\"fill\">#00FF40</CssParameter>\n" + 
-				"            </Fill>\n" + 
+				"          <TextSymbolizer>\n" +
+				"            <Font />\n" +
+				"            <Fill>\n" +
+				"              <CssParameter name=\"fill\">#00FF40</CssParameter>\n" +
+				"            </Fill>\n" +
 				"          </TextSymbolizer>"
 				));
 		return rect;
@@ -126,23 +126,23 @@ public class WorldPaintableDirectLayerTest {
 		WorldEllipseInfo ellipse = new WorldEllipseInfo();
 		ellipse.setBbox(new Bbox(150, 60, 50, 100));
 		ellipse.setGeometrySymbolizerInfo(toStyle("" +
-				"          <PolygonSymbolizer>\n" + 
-				"            <Fill>\n" + 
-				"              <CssParameter name=\"fill\">#F830FF</CssParameter>\n" + 
-				"            </Fill>\n" + 
-				"            <Stroke>\n" + 
-				"              <CssParameter name=\"stroke\">#FF00FF</CssParameter>\n" + 
-				"              <CssParameter name=\"stroke-width\">3</CssParameter>    \n" + 
-				"            </Stroke>\n" + 
-				"          </PolygonSymbolizer>\n" 
+				"          <PolygonSymbolizer>\n" +
+				"            <Fill>\n" +
+				"              <CssParameter name=\"fill\">#F830FF</CssParameter>\n" +
+				"            </Fill>\n" +
+				"            <Stroke>\n" +
+				"              <CssParameter name=\"stroke\">#FF00FF</CssParameter>\n" +
+				"              <CssParameter name=\"stroke-width\">3</CssParameter>    \n" +
+				"            </Stroke>\n" +
+				"          </PolygonSymbolizer>\n"
 				));
 		ellipse.setLabel("ellipse");
 		ellipse.setLabelSymbolizerInfo((TextSymbolizerInfo)toStyle("" +
-				"          <TextSymbolizer>\n" + 
-				"            <Font />\n" + 
-				"            <Fill>\n" + 
-				"              <CssParameter name=\"fill\">#00FF40</CssParameter>\n" + 
-				"            </Fill>\n" + 
+				"          <TextSymbolizer>\n" +
+				"            <Font />\n" +
+				"            <Fill>\n" +
+				"              <CssParameter name=\"fill\">#00FF40</CssParameter>\n" +
+				"            </Fill>\n" +
 				"          </TextSymbolizer>"
 				));
 		return ellipse;
@@ -153,8 +153,8 @@ public class WorldPaintableDirectLayerTest {
 		image.setBbox(new Bbox(10, 20, 100, 100));
 		image.setUrl("org/geomajas/plugin/rasterizing/layer-raster.png");
 		image.setGeometrySymbolizerInfo(toStyle("" +
-				"          <PolygonSymbolizer>\n" + 
-				"          </PolygonSymbolizer>\n" 
+				"          <PolygonSymbolizer>\n" +
+				"          </PolygonSymbolizer>\n"
 				));
 		return image;
 	}
@@ -164,11 +164,11 @@ public class WorldPaintableDirectLayerTest {
 		t.setAnchor(new Coordinate(40, 50));
 		t.setLabel("text");
 		t.setLabelSymbolizerInfo((TextSymbolizerInfo)toStyle("" +
-				"          <TextSymbolizer>\n" + 
-				"            <Font />\n" + 
-				"            <Fill>\n" + 
-				"              <CssParameter name=\"fill\">#000000</CssParameter>\n" + 
-				"            </Fill>\n" + 
+				"          <TextSymbolizer>\n" +
+				"            <Font />\n" +
+				"            <Fill>\n" +
+				"              <CssParameter name=\"fill\">#000000</CssParameter>\n" +
+				"            </Fill>\n" +
 				"          </TextSymbolizer>"
 				));
 		return t;
@@ -179,23 +179,23 @@ public class WorldPaintableDirectLayerTest {
 		WorldGeometryInfo p = new WorldGeometryInfo();
 		p.setGeometry(converterService.toDto(reader.read("POLYGON ((160 310, 180 360, 140 340, 160 310))")));
 		p.setGeometrySymbolizerInfo(toStyle("" +
-				"          <PolygonSymbolizer>\n" + 
-				"            <Fill>\n" + 
-				"              <CssParameter name=\"fill\">#40FF40</CssParameter>\n" + 
-				"            </Fill>\n" + 
-				"            <Stroke>\n" + 
-				"              <CssParameter name=\"stroke\">#000000</CssParameter>\n" + 
-				"              <CssParameter name=\"stroke-width\">2</CssParameter>    \n" + 
-				"            </Stroke>\n" + 
-				"          </PolygonSymbolizer>\n" 
+				"          <PolygonSymbolizer>\n" +
+				"            <Fill>\n" +
+				"              <CssParameter name=\"fill\">#40FF40</CssParameter>\n" +
+				"            </Fill>\n" +
+				"            <Stroke>\n" +
+				"              <CssParameter name=\"stroke\">#000000</CssParameter>\n" +
+				"              <CssParameter name=\"stroke-width\">2</CssParameter>    \n" +
+				"            </Stroke>\n" +
+				"          </PolygonSymbolizer>\n"
 				));
 		p.setLabel("polygon");
 		p.setLabelSymbolizerInfo((TextSymbolizerInfo)toStyle("" +
-				"          <TextSymbolizer>\n" + 
-				"            <Font />\n" + 
-				"            <Fill>\n" + 
-				"              <CssParameter name=\"fill\">#40FF40</CssParameter>\n" + 
-				"            </Fill>\n" + 
+				"          <TextSymbolizer>\n" +
+				"            <Font />\n" +
+				"            <Fill>\n" +
+				"              <CssParameter name=\"fill\">#40FF40</CssParameter>\n" +
+				"            </Fill>\n" +
 				"          </TextSymbolizer>"
 				));
 		return p;
@@ -206,20 +206,20 @@ public class WorldPaintableDirectLayerTest {
 		WorldGeometryInfo p = new WorldGeometryInfo();
 		p.setGeometry(converterService.toDto(reader.read("LINESTRING (200 10, 280 260)")));
 		p.setGeometrySymbolizerInfo(toStyle("" +
-				"          <LineSymbolizer>\n" + 
-				"            <Stroke>\n" + 
-				"              <CssParameter name=\"stroke\">#364440</CssParameter>\n" + 
-				"              <CssParameter name=\"stroke-width\">3</CssParameter>    \n" + 
-				"            </Stroke>\n" + 
-				"          </LineSymbolizer>\n" 
+				"          <LineSymbolizer>\n" +
+				"            <Stroke>\n" +
+				"              <CssParameter name=\"stroke\">#364440</CssParameter>\n" +
+				"              <CssParameter name=\"stroke-width\">3</CssParameter>    \n" +
+				"            </Stroke>\n" +
+				"          </LineSymbolizer>\n"
 				));
 		p.setLabel("line");
 		p.setLabelSymbolizerInfo((TextSymbolizerInfo)toStyle("" +
-				"          <TextSymbolizer>\n" + 
-				"            <Font />\n" + 
-				"            <Fill>\n" + 
-				"              <CssParameter name=\"fill\">#000000</CssParameter>\n" + 
-				"            </Fill>\n" + 
+				"          <TextSymbolizer>\n" +
+				"            <Font />\n" +
+				"            <Fill>\n" +
+				"              <CssParameter name=\"fill\">#000000</CssParameter>\n" +
+				"            </Fill>\n" +
 				"          </TextSymbolizer>"
 				));
 		return p;
@@ -230,47 +230,47 @@ public class WorldPaintableDirectLayerTest {
 		WorldGeometryInfo p = new WorldGeometryInfo();
 		p.setGeometry(converterService.toDto(reader.read("POINT(300 100)")));
 		p.setGeometrySymbolizerInfo(toStyle("" +
-				"          <PointSymbolizer>\n" + 
-				"            <Graphic>\n" + 
-				"              <Mark>\n" + 
-				"                <WellKnownName>circle</WellKnownName>\n" + 
-				"                <Fill>\n" + 
-				"                  <CssParameter name=\"fill\">#0033CC</CssParameter>\n" + 
-				"                </Fill>\n" + 
-				"              </Mark>\n" + 
-				"              <Size>20</Size>\n" + 
-				"            </Graphic>\n" + 
+				"          <PointSymbolizer>\n" +
+				"            <Graphic>\n" +
+				"              <Mark>\n" +
+				"                <WellKnownName>circle</WellKnownName>\n" +
+				"                <Fill>\n" +
+				"                  <CssParameter name=\"fill\">#0033CC</CssParameter>\n" +
+				"                </Fill>\n" +
+				"              </Mark>\n" +
+				"              <Size>20</Size>\n" +
+				"            </Graphic>\n" +
 				"          </PointSymbolizer>\n"
 				));
 		p.setLabel("point");
 		p.setLabelSymbolizerInfo((TextSymbolizerInfo)toStyle("" +
-				"          <TextSymbolizer>\n" + 
-				"            <Font />\n" + 
-				"            <Fill>\n" + 
-				"              <CssParameter name=\"fill\">#000000</CssParameter>\n" + 
-				"            </Fill>\n" + 
+				"          <TextSymbolizer>\n" +
+				"            <Font />\n" +
+				"            <Fill>\n" +
+				"              <CssParameter name=\"fill\">#000000</CssParameter>\n" +
+				"            </Fill>\n" +
 				"          </TextSymbolizer>"
 				));
 		return p;
 	}
-	
+
 	private SymbolizerTypeInfo toStyle(String sld) throws Exception {
-		String style = "<StyledLayerDescriptor version=\"1.0.0\"\n" + 
-				"    xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" \n" + 
-				"    xmlns=\"http://www.opengis.net/sld\" \n" + 
-				"    xmlns:ogc=\"http://www.opengis.net/ogc\" \n" + 
-				"    xmlns:xlink=\"http://www.w3.org/1999/xlink\" \n" + 
-				"    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" + 
-				"  <NamedLayer>\n" + 
-				"    <Name>test</Name>\n" + 
-				"    <UserStyle>\n" + 
-				"      <Title>test</Title>\n" + 
-				"      <FeatureTypeStyle>\n" + 
-				"        <Rule>\n" + 
-				""+sld+"       </Rule>\n" + 
-						"      </FeatureTypeStyle>\n" + 
-						"    </UserStyle>\n" + 
-						"  </NamedLayer>\n" + 
+		String style = "<StyledLayerDescriptor version=\"1.0.0\"\n" +
+				"    xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" \n" +
+				"    xmlns=\"http://www.opengis.net/sld\" \n" +
+				"    xmlns:ogc=\"http://www.opengis.net/ogc\" \n" +
+				"    xmlns:xlink=\"http://www.w3.org/1999/xlink\" \n" +
+				"    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
+				"  <NamedLayer>\n" +
+				"    <Name>test</Name>\n" +
+				"    <UserStyle>\n" +
+				"      <Title>test</Title>\n" +
+				"      <FeatureTypeStyle>\n" +
+				"        <Rule>\n" +
+				""+sld+"       </Rule>\n" +
+						"      </FeatureTypeStyle>\n" +
+						"    </UserStyle>\n" +
+						"  </NamedLayer>\n" +
 						"</StyledLayerDescriptor>";
 		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
 		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
@@ -283,15 +283,16 @@ public class WorldPaintableDirectLayerTest {
 
 		private DirectLayer layer;
 
-		private MapContext mapContext;
+		private MapContent mapContext;
 
-		public DirectLayerAssert(DirectLayer layer, MapContext mapContext) {
+		public DirectLayerAssert(DirectLayer layer, MapContent mapContext) {
 			super(imagePath);
 			this.layer = layer;
 			this.mapContext = mapContext;
 		}
 
-		public void generateActual(OutputStream out) throws Exception {
+		@Override
+        public void generateActual(OutputStream out) throws Exception {
 			Rectangle rect = mapContext.getViewport().getScreenArea();
 			BufferedImage image = new BufferedImage((int) rect.getWidth(), (int) rect.getHeight(),
 					BufferedImage.TYPE_4BYTE_ABGR);

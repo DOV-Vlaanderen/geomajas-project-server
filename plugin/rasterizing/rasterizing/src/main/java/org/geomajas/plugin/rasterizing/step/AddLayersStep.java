@@ -22,19 +22,20 @@ import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingEnvironmentVariable;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Step which adds all the layers to the map context and prepares the context for rendering.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class AddLayersStep extends AbstractRasterizingStep {
@@ -48,12 +49,13 @@ public class AddLayersStep extends AbstractRasterizingStep {
 	@Autowired
 	private GeoService geoService;
 
-	public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
+	@Override
+    public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
 		ClientMapInfo clientMapInfo = context.get(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, ClientMapInfo.class);
 		// Create the map context
-		MapContext mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContext.class);
+		MapContent mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContent.class);
 		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) clientMapInfo
-				.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
+				.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
 		mapContext.getUserData().put(LayerFactory.USERDATA_RASTERIZING_INFO, mapRasterizingInfo);
 		Crs mapCrs = geoService.getCrs2(clientMapInfo.getCrs());
 		ReferencedEnvelope mapArea = new ReferencedEnvelope(
@@ -65,14 +67,14 @@ public class AddLayersStep extends AbstractRasterizingStep {
 		viewPort.setBounds(mapArea);
 		viewPort.setCoordinateReferenceSystem(mapCrs);
 		viewPort.setScreenArea(paintArea);
-		
+
 		// set the geotools environmental variables (can be referred to in SLD)
 		EnvFunction.setLocalValue(RasterizingEnvironmentVariable.BBOX, mapContext.getViewport().getBounds());
 		EnvFunction.setLocalValue(RasterizingEnvironmentVariable.SCREEN_WIDTH, (int) mapContext.getViewport()
 				.getScreenArea().getWidth());
 		EnvFunction.setLocalValue(RasterizingEnvironmentVariable.SCREEN_HEIGHT, (int) mapContext.getViewport()
 				.getScreenArea().getHeight());
-		
+
 		// add the configured layers
 		for (ClientLayerInfo clientLayerInfo : clientMapInfo.getLayers()) {
 			boolean showing = (Boolean) layerFactoryService.getLayerUserData(mapContext, clientLayerInfo).get(

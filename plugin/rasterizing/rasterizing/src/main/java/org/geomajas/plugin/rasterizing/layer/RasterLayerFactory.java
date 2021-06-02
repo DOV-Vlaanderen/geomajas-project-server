@@ -30,18 +30,19 @@ import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer.UrlDownLoader;
 import org.geomajas.service.ConfigurationService;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * This factory creates a GeoTools layer that is capable of rendering raster layers.
- * 
+ *
  * @author Jan De Moerloose
  */
 @Component
@@ -63,24 +64,26 @@ public class RasterLayerFactory implements LayerFactory {
 	public int getThreadsPerCore() {
 		return threadsPerCore;
 	}
-	
+
 	public void setThreadsPerCore(int threadsPerCore) {
 		this.threadsPerCore = threadsPerCore;
 	}
 
-	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+	@Override
+    public boolean canCreateLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof ClientRasterLayerInfo;
 	}
 
-	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+	@Override
+    public Layer createLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
 		if (!(clientLayerInfo instanceof ClientRasterLayerInfo)) {
 			throw new IllegalArgumentException(
 					"RasterLayerFactory.createLayer() should only be called using ClientRasterLayerInfo");
 		}
 		ClientRasterLayerInfo rasterInfo = (ClientRasterLayerInfo) clientLayerInfo;
 		RasterLayerRasterizingInfo extraInfo = (RasterLayerRasterizingInfo) rasterInfo
-				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
-		ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
+				.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
+		ReferencedEnvelope areaOfInterest = mapContext.getMaxBounds();
 		final RasterLayer layer = configurationService.getRasterLayer(clientLayerInfo.getServerLayerId());
 		MapViewport port = mapContext.getViewport();
 		double rasterScale = port.getScreenArea().getWidth() / port.getBounds().getWidth();
@@ -99,14 +102,15 @@ public class RasterLayerFactory implements LayerFactory {
 		return rasterLayer;
 	}
 
-	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+	@Override
+    public Map<String, Object> getLayerUserData(MapContent mapContext, ClientLayerInfo clientLayerInfo) {
 		Map<String, Object> userData = new HashMap<String, Object>();
 		RasterLayerRasterizingInfo extraInfo = (RasterLayerRasterizingInfo) clientLayerInfo
-				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
+				.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
 		userData.put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return userData;
 	}
-	
+
 	@PostConstruct
 	public void postConstruct() {
 		int cpus = Runtime.getRuntime().availableProcessors();

@@ -43,7 +43,7 @@ import org.geomajas.plugin.rasterizing.command.dto.ClientSvgLayerInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.DOMException;
@@ -54,7 +54,7 @@ import org.xml.sax.SAXException;
 
 /**
  * This factory creates a GeoTools layer that is capable of writing geometries.
- * 
+ *
  * @author Jan De Moerloose
  */
 @Component
@@ -63,11 +63,13 @@ public class SvgLayerFactory implements LayerFactory {
 	@Autowired
 	private DtoConverterService converterService;
 
-	public boolean canCreateLayer(MapContext mapContent, ClientLayerInfo clientLayerInfo) {
+	@Override
+    public boolean canCreateLayer(MapContent mapContent, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof ClientSvgLayerInfo;
 	}
 
-	public Layer createLayer(MapContext mapContent, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+	@Override
+    public Layer createLayer(MapContent mapContent, ClientLayerInfo clientLayerInfo) throws GeomajasException {
 		if (!(clientLayerInfo instanceof ClientSvgLayerInfo)) {
 			throw new IllegalArgumentException(
 					"SvgLayerFactory.createLayer() should only be called using ClientSvgLayerInfo");
@@ -147,7 +149,8 @@ public class SvgLayerFactory implements LayerFactory {
 		return writer.toString();
 	}
 
-	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+	@Override
+    public Map<String, Object> getLayerUserData(MapContent mapContext, ClientLayerInfo clientLayerInfo) {
 		Map<String, Object> userData = new HashMap<String, Object>();
 		ClientSvgLayerInfo layerInfo = (ClientSvgLayerInfo) clientLayerInfo;
 		userData.put(USERDATA_KEY_SHOWING, layerInfo.isShowing());

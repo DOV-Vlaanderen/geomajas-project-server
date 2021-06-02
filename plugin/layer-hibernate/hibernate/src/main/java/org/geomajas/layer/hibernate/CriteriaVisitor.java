@@ -272,8 +272,9 @@ public class CriteriaVisitor implements FilterVisitor {
 	/** {@inheritDoc} */
 	@Override
 	public Object visit(BBOX filter, Object userData) {
-		Envelope env = new Envelope(filter.getMinX(), filter.getMaxX(), filter.getMinY(), filter.getMaxY());
-		String finalName = parsePropertyName(geomName, userData);
+        Envelope env = new Envelope(filter.getBounds().getMinX(), filter.getBounds().getMaxX(),
+                filter.getBounds().getMinY(), filter.getBounds().getMaxY());
+        String finalName = parsePropertyName(geomName, userData);
 		return SpatialRestrictions.filter(finalName, env, srid);
 	}
 

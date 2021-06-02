@@ -15,15 +15,15 @@ import java.awt.image.RenderedImage;
 import java.util.Map;
 
 import org.geomajas.annotation.Api;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 
 /**
  * This service renders a map context to a graphics context. The general purpose is to create a thread-safe wrapper for
  * the Geotools renderer.
- * 
+ *
  * @author Jan De Moerloose
  * @since 1.0.0
- * 
+ *
  */
 @Api(allMethods = true)
 // @extract-start RenderingService, Rendering service interface definition
@@ -31,29 +31,29 @@ public interface RenderingService {
 
 	/**
 	 * Renders the legend for the specified map context.
-	 * 
+	 *
 	 * @param context map context
 	 * @return the image
 	 */
-	RenderedImage paintLegend(MapContext context);
+	RenderedImage paintLegend(MapContent context);
 
 	/**
 	 * Renders the map context to the specified Java 2D graphics.
-	 * 
+	 *
 	 * @param context map context
 	 * @param graphics graphics object
 	 */
-	void paintMap(MapContext context, Graphics2D graphics);
+	void paintMap(MapContent context, Graphics2D graphics);
 
 	/**
 	 * Renders the map context to the specified Java 2D graphics using some extra renderer hints.
-	 * 
+	 *
 	 * @param context map context
 	 * @param graphics graphics object
 	 * @param rendererHints map of renderer hints (see
 	 *        {@link org.geotools.renderer.lite.StreamingRenderer#setRendererHints(Map)}
 	 * @since 1.1.0
 	 */
-	void paintMap(MapContext context, Graphics2D graphics, Map<Object, Object> rendererHints);
+	void paintMap(MapContent context, Graphics2D graphics, Map<Object, Object> rendererHints);
 }
 // @extract-end

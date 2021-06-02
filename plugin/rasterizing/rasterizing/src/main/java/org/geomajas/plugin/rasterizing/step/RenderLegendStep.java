@@ -15,12 +15,12 @@ import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.plugin.rasterizing.api.RenderingService;
 import org.geomajas.service.pipeline.PipelineContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Step which does the actual legend rendering.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class RenderLegendStep extends AbstractRasterizingStep {
@@ -28,8 +28,9 @@ public class RenderLegendStep extends AbstractRasterizingStep {
 	@Autowired
 	private RenderingService renderingService;
 
-	public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
-		MapContext mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContext.class);
+	@Override
+    public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
+		MapContent mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContent.class);
 		context.put(RasterizingPipelineCode.RENDERED_IMAGE, renderingService.paintLegend(mapContext));
 	}
 

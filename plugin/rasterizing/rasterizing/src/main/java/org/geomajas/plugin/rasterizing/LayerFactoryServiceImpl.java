@@ -19,16 +19,16 @@ import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.LayerFactoryService;
 import org.geomajas.plugin.rasterizing.api.RasterException;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * Default implementation of {@link LayerFactoryService}. Iterates over all configured factories.
- * 
+ *
  * @author Jan De Moerloose
  * @author Oliver May
- * 
+ *
  */
 @Component
 public class LayerFactoryServiceImpl implements LayerFactoryService {
@@ -36,7 +36,8 @@ public class LayerFactoryServiceImpl implements LayerFactoryService {
 	@Autowired
 	private List<LayerFactory> factories;
 
-	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+	@Override
+    public Layer createLayer(MapContent mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
 		for (LayerFactory factory : factories) {
 			if (factory.canCreateLayer(mapContext, clientLayerInfo)) {
 				return factory.createLayer(mapContext, clientLayerInfo);
@@ -45,7 +46,8 @@ public class LayerFactoryServiceImpl implements LayerFactoryService {
 		throw new RasterException(RasterException.MISSING_LAYER_FACTORY, clientLayerInfo.getLabel());
 	}
 
-	public Map<String, Object> getLayerUserData(MapContext mapContext, ClientLayerInfo clientLayerInfo)
+	@Override
+    public Map<String, Object> getLayerUserData(MapContent mapContext, ClientLayerInfo clientLayerInfo)
 			throws GeomajasException {
 		for (LayerFactory factory : factories) {
 			if (factory.canCreateLayer(mapContext, clientLayerInfo)) {

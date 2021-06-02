@@ -11,13 +11,12 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.rasterizing.command.dto.ClientSvgLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.service.GeoService;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +56,10 @@ public class SvgDirectLayerTest {
 		mapRasterizingInfo.setBounds(new Bbox(0, 0, 100, 100));
 		mapRasterizingInfo.setScale(1);
 		mapRasterizingInfo.setTransparent(true);
-		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY,
+		mapInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY,
 				mapRasterizingInfo);
 
-		MapContext mapContent = new DefaultMapContext();
+		MapContent mapContent = new MapContent();
 		mapContent.getViewport().setBounds(
 				new ReferencedEnvelope(0, 100, 0, 100, geoService
 						.getCrs2(mapInfo.getCrs())));
@@ -85,7 +84,8 @@ public class SvgDirectLayerTest {
 			this.mapContent = mapContent;
 		}
 
-		public void generateActual(OutputStream out) throws Exception {
+		@Override
+        public void generateActual(OutputStream out) throws Exception {
 			Rectangle rect = mapContent.getViewport().getScreenArea();
 			BufferedImage image = new BufferedImage((int) rect.getWidth(),
 					(int) rect.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);

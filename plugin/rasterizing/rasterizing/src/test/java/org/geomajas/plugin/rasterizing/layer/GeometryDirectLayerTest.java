@@ -16,6 +16,7 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.StyleConverterService;
@@ -23,9 +24,8 @@ import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.DirectLayer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,10 +69,10 @@ public class GeometryDirectLayerTest {
 		mapRasterizingInfo.setBounds(new Bbox(0, 0, 100, 100));
 		mapRasterizingInfo.setScale(1);
 		mapRasterizingInfo.setTransparent(true);
-		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		mapInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, mapRasterizingInfo);
 
-		DefaultMapContext mapContext = new DefaultMapContext();
-		mapContext.setCoordinateReferenceSystem(geoService.getCrs2("EPSG:4326"));
+		MapContent mapContext = new MapContent();
+		mapContext.getViewport().setCoordinateReferenceSystem(geoService.getCrs2("EPSG:4326"));
 		mapContext.getViewport().setBounds(
 				new ReferencedEnvelope(0, 100, 0, 100, mapContext.getCoordinateReferenceSystem()));
 		mapContext.getViewport().setCoordinateReferenceSystem(mapContext.getCoordinateReferenceSystem());
@@ -107,15 +107,16 @@ public class GeometryDirectLayerTest {
 
 		private DirectLayer layer;
 
-		private MapContext mapContext;
+		private MapContent mapContext;
 
-		public DirectLayerAssert(DirectLayer layer, MapContext mapContext) {
+		public DirectLayerAssert(DirectLayer layer, MapContent mapContext) {
 			super(IMAGE_CLASS_PATH);
 			this.layer = layer;
 			this.mapContext = mapContext;
 		}
 
-		public void generateActual(OutputStream out) throws Exception {
+		@Override
+        public void generateActual(OutputStream out) throws Exception {
 			Rectangle rect = mapContext.getViewport().getScreenArea();
 			BufferedImage image = new BufferedImage((int) rect.getWidth(), (int) rect.getHeight(),
 					BufferedImage.TYPE_4BYTE_ABGR);

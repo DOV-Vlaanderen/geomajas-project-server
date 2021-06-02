@@ -11,13 +11,13 @@
 package org.geomajas.plugin.rasterizing.sld;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.process.function.ProcessFunction;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.FeatureTypeStyleImpl;
-import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
@@ -33,9 +33,9 @@ import org.opengis.style.RasterSymbolizer;
 /**
  * Implementation of {@link org.geotools.styling.StyleVisitor} that duplicates
  * an SLD style while filtering out text and/or geometry symbolizers.
- * 
+ *
  * @author Jan De Moerloose
- * 
+ *
  */
 public class SymbolizerFilterVisitor extends DuplicatingStyleVisitor {
 
@@ -51,16 +51,17 @@ public class SymbolizerFilterVisitor extends DuplicatingStyleVisitor {
 
 		FeatureTypeStyle copy = new FeatureTypeStyleImpl(
 				(FeatureTypeStyleImpl) fts);
-		Rule[] rules = fts.getRules();
-		int length = rules.length;
+		List<Rule> rules = fts.rules();
+		int length = rules.size();
 		Rule[] rulesCopy = new Rule[length];
 		for (int i = 0; i < length; i++) {
-			if (rules[i] != null) {
-				rules[i].accept(this);
+			if (rules.get(i) != null) {
+			    rules.get(i).accept(this);
 				rulesCopy[i] = (Rule) pages.pop();
 			}
 		}
-		copy.setRules(rulesCopy);
+		copy.rules().clear();
+		copy.rules().addAll(Arrays.asList(rulesCopy));
 		if (fts.getTransformation() != null) {
 			copy.setTransformation(copy(fts.getTransformation()));
 		}
@@ -92,18 +93,14 @@ public class SymbolizerFilterVisitor extends DuplicatingStyleVisitor {
 			}
 		}
 
-		Graphic[] legendCopy = rule.getLegendGraphic();
-		for (int i = 0; i < legendCopy.length; i++) {
-			legendCopy[i] = copy(legendCopy[i]);
-		}
-
+		org.opengis.style.GraphicLegend legendCopy = rule.getLegend();
 		Description descCopy = rule.getDescription();
 		descCopy = copy(descCopy);
 
 		copy = sf.createRule();
 		copy.symbolizers().addAll(symsCopy);
 		copy.setDescription(descCopy);
-		copy.setLegendGraphic(legendCopy);
+		copy.setLegend(legendCopy);
 		copy.setName(rule.getName());
 		copy.setFilter(filterCopy);
 		copy.setElseFilter(rule.isElseFilter());

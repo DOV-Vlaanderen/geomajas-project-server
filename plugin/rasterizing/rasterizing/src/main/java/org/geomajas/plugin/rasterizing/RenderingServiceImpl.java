@@ -43,7 +43,7 @@ import org.geomajas.sld.TextSymbolizerInfo;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.util.factory.Hints;
@@ -82,7 +82,7 @@ public class RenderingServiceImpl implements RenderingService {
 
 	@Override
     @SuppressWarnings("unchecked")
-	public RenderedImage paintLegend(MapContext mapContext) {
+	public RenderedImage paintLegend(MapContent mapContext) {
 		LegendBuilder builder = new LegendBuilder();
 		LegendRasterizingInfo legendRasterizingInfo = getLegendInfo(mapContext);
 		// set font and title
@@ -156,7 +156,7 @@ public class RenderingServiceImpl implements RenderingService {
 		return legendGraphicService.getLegendGraphic(legendMetadata);
 	}
 
-	private LegendRasterizingInfo getLegendInfo(MapContext mapContext) {
+	private LegendRasterizingInfo getLegendInfo(MapContent mapContext) {
 		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) mapContext.getUserData().get(
 				LayerFactory.USERDATA_RASTERIZING_INFO);
 		return mapRasterizingInfo.getLegendRasterizingInfo();
@@ -172,7 +172,7 @@ public class RenderingServiceImpl implements RenderingService {
 	}
 
 	@Override
-    public void paintMap(MapContext context, Graphics2D graphics, Map<Object, Object> hints) {
+    public void paintMap(MapContent context, Graphics2D graphics, Map<Object, Object> hints) {
 		List<RenderRequest> renderStack = new ArrayList<RenderRequest>();
 		VectorRenderRequest vectorRequest = null;
 		for (Layer layer : context.layers()) {
@@ -193,7 +193,7 @@ public class RenderingServiceImpl implements RenderingService {
 	}
 
 	@Override
-    public void paintMap(MapContext context, Graphics2D graphics) {
+    public void paintMap(MapContent context, Graphics2D graphics) {
 		paintMap(context, graphics, new HashMap<Object, Object>());
 	}
 
@@ -231,11 +231,11 @@ public class RenderingServiceImpl implements RenderingService {
 
 		private final Graphics2D graphics;
 
-		private final MapContext mapContext;
+		private final MapContent mapContext;
 
 		private final DirectLayer layer;
 
-		public DirectRenderRequest(Graphics2D graphics, MapContext mapContext, DirectLayer layer) {
+		public DirectRenderRequest(Graphics2D graphics, MapContent mapContext, DirectLayer layer) {
 			super();
 			this.graphics = graphics;
 			this.mapContext = mapContext;
@@ -258,14 +258,15 @@ public class RenderingServiceImpl implements RenderingService {
 
 		private final Graphics2D graphics;
 
-		private final MapContext mapContext = new MapContext();
+		private final MapContent mapContext = new MapContent();
 
 		private final Map<Object, Object> hints;
 
-		public VectorRenderRequest(Graphics2D graphics, MapContext context, Map<Object, Object> hints) {
+		public VectorRenderRequest(Graphics2D graphics, MapContent context, Map<Object, Object> hints) {
 			this.graphics = graphics;
 			this.hints = hints;
-			this.mapContext.setAreaOfInterest(context.getAreaOfInterest());
+
+			//this.mapContext.setAreaOfInterest(context.getAreaOfInterest());
 			MapViewport viewPort = this.mapContext.getViewport();
 			viewPort.setBounds(context.getViewport().getBounds());
 			viewPort.setScreenArea(context.getViewport().getScreenArea());
@@ -275,7 +276,7 @@ public class RenderingServiceImpl implements RenderingService {
 		@Override
         public void execute() {
 			StreamingRenderer renderer = new StreamingRenderer();
-			renderer.setContext(mapContext);
+			renderer.setMapContent(mapContext);
 			renderer.setThreadPool(threadPool);
 			// we use OGC scale for predictable conversion between pix/m scale and relative scale
 			if (!hints.containsKey(StreamingRenderer.SCALE_COMPUTATION_METHOD_KEY)) {
@@ -286,7 +287,7 @@ public class RenderingServiceImpl implements RenderingService {
 			mapContext.dispose();
 		}
 
-		public MapContext getMapContext() {
+		public MapContent getMapContext() {
 			return mapContext;
 		}
 
