@@ -871,7 +871,10 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			rule.setFilter(filter);
 		}
 		rule.setName(featureStyle.getName());
-		rule.setTitle(featureStyle.getName());
+        if (rule.getDescription()  != null) {
+            rule.getDescription().setTitle(featureStyle.getName());
+        }
+		//rule.setTitle(featureStyle.getName());
 		return rule;
 	}
 

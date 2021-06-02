@@ -1001,8 +1001,8 @@
 
 	<properties>
 		<!--general important dependencies-->
-		<geotools-version>21.0-dov-0.5</geotools-version>
-		<geotools-wfs-version>21.0-dov-0.5</geotools-wfs-version>
+		<geotools-version>25.1</geotools-version>
+		<geotools-wfs-version>25.1</geotools-wfs-version>
 		<spring-version>5.3.6</spring-version>
 
 		<!--geomajas dependencies-->
