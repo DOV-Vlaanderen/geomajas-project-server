@@ -58,7 +58,7 @@ public class GetTileFilterStep implements PipelineStep<GetTileContainer> {
 
 		String geomName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 
-		String epsg = Integer.toString(geoService.getSridFromCrs(layer.getCrs()));
+        String epsg = geoService.getCodeFromCrs(layer.getCrs());
 		// transform tile bounds back to layer coordinates
 		// TODO: for non-affine transforms this is not accurate enough !
 		Envelope bounds = geoService.transform(response.getTile().getBounds(), maptoLayer);
