@@ -97,7 +97,7 @@ public class ImageServiceImpl implements ImageService {
         MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
 
         mapContext.setViewport(new MapViewport(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
-              mapContext.getCoordinateReferenceSystem())));
+                geoService.getCrs2(clientMapInfo.getCrs()))));
 		mapContext.getViewport().setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
 
 		RenderingHints renderingHints = new Hints();

@@ -90,6 +90,7 @@ public class TmsController {
 	public static final int PROFILE_TILE_SIZE = 256;
 
 	private final Logger log = LoggerFactory.getLogger(TmsController.class);
+    private final Logger log2 = LoggerFactory.getLogger("geotools25");
 
 	public static final String MAPPING = "/";
 
@@ -160,7 +161,7 @@ public class TmsController {
 
 	/**
 	 * Publishes all vector layers.
-	 * 
+	 *
 	 * @param response
 	 * @throws GeomajasException
 	 * @throws IOException
@@ -172,7 +173,7 @@ public class TmsController {
 
 	/**
 	 * Publishes a single vector layer.
-	 * 
+	 *
 	 * @param response
 	 * @throws GeomajasException
 	 * @throws IOException
@@ -180,17 +181,20 @@ public class TmsController {
 	@RequestMapping(value = MAPPING_1_0_0 + "/{layerId}@{crs}/{styleKey}", method = RequestMethod.GET)
 	public void getTileMap(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
 			HttpServletResponse response) throws GeomajasException, IOException {
+	    log2.error("entering getTileMap 1.0.0");
+        log2.error("layerId = {}", layerId);
+        log2.error("crs = {}", crs);
 		tmsService.writeTileMap(layerId, styleKey, getProfileForLayer(layerId, crs).getProfile(), response.getWriter());
 	}
 
 	/**
 	 * Publishes a single tile.
-	 * 
+	 *
 	 * @param response
 	 * @throws GeomajasException
 	 * @throws IOException
 	 */
-	@RequestMapping(value = MAPPING_1_0_0 + "/{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}", 
+	@RequestMapping(value = MAPPING_1_0_0 + "/{layerId}@{crs}/{styleKey}/{tileLevel}/{xIndex}/{yIndex}.{imageFormat}",
 			method = RequestMethod.GET)
 	public void getTile(@PathVariable String layerId, @PathVariable String styleKey, @PathVariable String crs,
 			@PathVariable Integer tileLevel, @PathVariable Integer xIndex, @PathVariable Integer yIndex,
@@ -234,7 +238,14 @@ public class TmsController {
 			@RequestParam(required = false, defaultValue = "false") boolean showLabels,
 			@RequestParam(required = false) String filter, HttpServletResponse response) throws Exception {
 		try {
-			Crs tileCrs = geoService.getCrs2(crs);
+
+	        log2.error("entering getVectorTile");
+            log2.error("layerId = {}", layerId);
+            log2.error("crs = {}", crs);
+	        log2.error("styleKey = {}", styleKey);
+	        log2.error("tileLevel = {}", tileLevel);
+
+		    Crs tileCrs = geoService.getCrs2(crs);
 			TmsTileMetadata tileMetadata = new TmsTileMetadata();
 			tileMetadata.setCode(new TileCode(tileLevel, xIndex, yIndex));
 			tileMetadata.setCrs(geoService.getCodeFromCrs(tileCrs));
@@ -346,6 +357,7 @@ public class TmsController {
 	 */
 	private void renderImage(String layerId, String key, HttpServletResponse response) throws Exception {
 
+	    log2.error("Tmscontroller: render image");
 		try {
 			VectorLayer layer = configurationService.getVectorLayer(layerId);
 			RasterizingContainer rasterizeContainer = cacheManagerService.get(layer, CacheCategory.RASTER, key,
@@ -434,7 +446,7 @@ public class TmsController {
 		return tileExtent;
 	}
 
-	private void writeToResponse(RasterLayer layer, String url, HttpServletRequest request, 
+	private void writeToResponse(RasterLayer layer, String url, HttpServletRequest request,
 			HttpServletResponse response)
 			throws Exception {
 		InputStream stream = null;

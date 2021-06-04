@@ -27,6 +27,7 @@ import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapRequest;
 import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapResponse;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
 import org.jboss.serial.io.JBossObjectOutputStream;
@@ -41,7 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Test for GetLocationForStringCommand command, with explicit combiner.
- * 
+ *
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -74,6 +75,7 @@ public class RasterizeMapCommandTest {
 
 	@Test
 	public void testMissingMapInfo() throws Exception {
+
 		RasterizeMapRequest request = new RasterizeMapRequest();
 		ClientMapInfo mapInfo = clientApplicationInfo.getMaps().get(0);
 		request.setClientMapInfo(mapInfo);
@@ -89,10 +91,10 @@ public class RasterizeMapCommandTest {
 	@Test
 	public void testKeysAndUrls() throws Exception {
 		RasterizeMapRequest request = new RasterizeMapRequest();
-		ClientMapInfo orig = clientApplicationInfo.getMaps().get(0); 
+		ClientMapInfo orig = clientApplicationInfo.getMaps().get(0);
 		// clone to keep context clean
 		ClientMapInfo mapInfo = cloneInfo(orig);
-		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		mapInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, mapRasterizingInfo);
 		request.setClientMapInfo(mapInfo);
 		for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
 			if(layerInfo instanceof ClientVectorLayerInfo){
@@ -101,11 +103,11 @@ public class RasterizeMapCommandTest {
 				rasterizingInfo.setPaintGeometries(true);
 				rasterizingInfo.setPaintLabels(true);
 				rasterizingInfo.setStyle(((ClientVectorLayerInfo) layerInfo).getNamedStyleInfo());
-				layerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, rasterizingInfo);
+				layerInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, rasterizingInfo);
 			} else {
 				RasterLayerRasterizingInfo rasterizingInfo = new RasterLayerRasterizingInfo();
 				rasterizingInfo.setShowing(true);
-				layerInfo.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rasterizingInfo);
+				layerInfo.getWidgetInfo().put(RasterizingConstants.WIDGET_KEY, rasterizingInfo);
 			}
 		}
 		CommandResponse response = commandDispatcher.execute(RasterizeMapRequest.COMMAND, request, null, "en");
@@ -114,16 +116,16 @@ public class RasterizeMapCommandTest {
 		RasterizeMapResponse rasterizeMapResponse = (RasterizeMapResponse) response;
 		Assert.assertFalse(rasterizeMapResponse.isError());
 		Assert.assertNotNull(rasterizeMapResponse.getLegendKey());
-		Assert.assertEquals("http://test/rasterizing/image/"+rasterizeMapResponse.getLegendKey()+".png", rasterizeMapResponse.getLegendUrl());
+		Assert.assertEquals("http://test/image/"+rasterizeMapResponse.getLegendKey()+".png", rasterizeMapResponse.getLegendUrl());
 		Assert.assertNotNull(rasterizeMapResponse.getMapKey());
-		Assert.assertEquals("http://test/rasterizing/image/"+rasterizeMapResponse.getMapKey()+".png", rasterizeMapResponse.getMapUrl());
+		Assert.assertEquals("http://test/image/"+rasterizeMapResponse.getMapKey()+".png", rasterizeMapResponse.getMapUrl());
 	}
 
 	@After
 	public void logout() {
 		securityManager.clearSecurityContext();
 	}
-	
+
 	private ClientMapInfo cloneInfo(ClientMapInfo input) throws GeomajasException {
 		try {
 			JBossObjectOutputStream jbossSerializer = new JBossObjectOutputStream(null);

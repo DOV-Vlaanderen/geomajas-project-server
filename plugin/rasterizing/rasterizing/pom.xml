@@ -47,11 +47,19 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-layer-common</artifactId>
 		</dependency>
+
+		<!-- geotools uses batik 1.14 -->
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-svg-dom</artifactId>
-            <version>1.10</version>
+            <version>1.14</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-constants</artifactId>
+            <version>1.14</version>
+        </dependency>
+        
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
@@ -141,12 +149,28 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-
+        <dependency>
+		    <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.el</artifactId>
+            <version>3.0.3</version>
+        </dependency>
 	</dependencies>
 
 	<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
@@ -237,7 +261,7 @@
 	</profiles>
 
 	<properties>
-		<image.profile>hudson</image.profile>
+		<image.profile>default</image.profile>
 	</properties>
 
 
