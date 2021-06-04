@@ -72,7 +72,7 @@
                 <checkstyle.skip>true</checkstyle.skip> <!-- we use spaces, not tabs -->
                 <enforcer.skip>true</enforcer.skip> <!-- upper boundries fail miserably -->
                 <maven.javadoc.skip>true</maven.javadoc.skip> <!--too many errors -->
-                <skipTests>true</skipTests> 
+                <skipTests>false</skipTests> 
             </properties>
         </profile>
         <profile>
