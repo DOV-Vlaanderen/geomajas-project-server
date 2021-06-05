@@ -83,7 +83,8 @@ public class RasterLayerFactory implements LayerFactory {
 		ClientRasterLayerInfo rasterInfo = (ClientRasterLayerInfo) clientLayerInfo;
 		RasterLayerRasterizingInfo extraInfo = (RasterLayerRasterizingInfo) rasterInfo
 				.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
-		ReferencedEnvelope areaOfInterest = mapContext.getMaxBounds();
+		// ATTENTION ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
+		ReferencedEnvelope areaOfInterest = mapContext.getViewport().getBounds();
 		final RasterLayer layer = configurationService.getRasterLayer(clientLayerInfo.getServerLayerId());
 		MapViewport port = mapContext.getViewport();
 		double rasterScale = port.getScreenArea().getWidth() / port.getBounds().getWidth();

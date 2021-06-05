@@ -28,6 +28,7 @@ import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Description;
+import org.opengis.style.GraphicLegend;
 import org.opengis.style.RasterSymbolizer;
 
 /**
@@ -56,10 +57,11 @@ public class SymbolizerFilterVisitor extends DuplicatingStyleVisitor {
 		Rule[] rulesCopy = new Rule[length];
 		for (int i = 0; i < length; i++) {
 			if (rules.get(i) != null) {
-			    rules.get(i).accept(this);
+				rules.get(i).accept(this);
 				rulesCopy[i] = (Rule) pages.pop();
 			}
 		}
+		// ATTENTION copy.setRules(rulesCopy);
 		copy.rules().clear();
 		copy.rules().addAll(Arrays.asList(rulesCopy));
 		if (fts.getTransformation() != null) {
@@ -93,7 +95,13 @@ public class SymbolizerFilterVisitor extends DuplicatingStyleVisitor {
 			}
 		}
 
-		org.opengis.style.GraphicLegend legendCopy = rule.getLegend();
+		// ATTENTION
+//		Graphic[] legendCopy = rule.getLegendGraphic();
+//		for (int i = 0; i < legendCopy.length; i++) {
+//			legendCopy[i] = copy(legendCopy[i]);
+//		}
+        GraphicLegend legendCopy = rule.getLegend();
+
 		Description descCopy = rule.getDescription();
 		descCopy = copy(descCopy);
 

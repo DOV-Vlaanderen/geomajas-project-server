@@ -21,6 +21,7 @@ import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
+import org.geotools.referencing.CRS;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,7 +43,8 @@ public class GetTileFilterStep implements PipelineStep<GetTileContainer> {
 	@Autowired
 	private GeoService geoService;
 
-	public String getId() {
+	@Override
+    public String getId() {
 		return id;
 	}
 
@@ -50,7 +52,8 @@ public class GetTileFilterStep implements PipelineStep<GetTileContainer> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, GetTileContainer response) throws GeomajasException {
+	@Override
+    public void execute(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 		CrsTransform layerToMap = context.get(PipelineCode.CRS_TRANSFORM_KEY, CrsTransform.class);
@@ -58,7 +61,8 @@ public class GetTileFilterStep implements PipelineStep<GetTileContainer> {
 
 		String geomName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 
-        String epsg = geoService.getCodeFromCrs(layer.getCrs());
+        //String epsg = geoService.getCodeFromCrs(layer.getCrs());
+        String epsg = CRS.toSRS(layer.getCrs());
 		// transform tile bounds back to layer coordinates
 		// TODO: for non-affine transforms this is not accurate enough !
 		Envelope bounds = geoService.transform(response.getTile().getBounds(), maptoLayer);

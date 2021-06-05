@@ -93,12 +93,18 @@ public class ImageServiceImpl implements ImageService {
 	private RasterizingContainer callPipeline(ClientMapInfo clientMapInfo, PipelineContext context, String pipelineKey)
 			throws GeomajasException {
 		MapContent mapContext = new MapContent();
-        MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
+		// ATTENTION
+//		mapContext.setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
+//		MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
+//		mapContext.setAreaOfInterest(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
+//				mapContext.getCoordinateReferenceSystem()));
+
         mapContext.getViewport().setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
+        MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
         mapContext.getViewport().setBounds(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
                 mapContext.getCoordinateReferenceSystem()));
 
-        RenderingHints renderingHints = new Hints();
+		RenderingHints renderingHints = new Hints();
 		renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		RasterizingContainer response = new RasterizingContainer();
 		context.put(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, clientMapInfo);

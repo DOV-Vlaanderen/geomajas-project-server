@@ -24,6 +24,7 @@ import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
+
 import org.geotools.map.DirectLayer;
 import org.geotools.map.MapContent;
 import org.junit.Test;

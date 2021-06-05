@@ -188,7 +188,7 @@ public final class FilterServiceImpl implements FilterService {
 	@Override
 	public Filter createBboxFilter(String epsg, Envelope bbox, String geomName) {
 		return FF.bbox(geomName, bbox.getMinX(), bbox.getMinY(), 
-                       bbox.getMaxX(), bbox.getMaxY(), prefixEpsg(epsg));
+                       bbox.getMaxX(), bbox.getMaxY(), epsg);
 	}
 
 	@Override
@@ -206,13 +206,6 @@ public final class FilterServiceImpl implements FilterService {
 	@Override
 	public Filter createTrueFilter() {
 		return Filter.INCLUDE;
-	}
-
-	public String prefixEpsg(String srid) {
-		if (srid != null && !srid.toLowerCase().startsWith("epsg")) {
-            return "EPSG:" + srid;
-        }
-        return srid;
 	}
 
 	@Override

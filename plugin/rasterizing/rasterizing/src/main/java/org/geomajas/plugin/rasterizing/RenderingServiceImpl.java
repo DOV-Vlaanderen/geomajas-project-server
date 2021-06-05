@@ -265,8 +265,8 @@ public class RenderingServiceImpl implements RenderingService {
 		public VectorRenderRequest(Graphics2D graphics, MapContent context, Map<Object, Object> hints) {
 			this.graphics = graphics;
 			this.hints = hints;
-
 			//this.mapContext.setAreaOfInterest(context.getAreaOfInterest());
+			this.mapContext.getViewport().setBounds(context.getViewport().getBounds());
 			MapViewport viewPort = this.mapContext.getViewport();
 			viewPort.setBounds(context.getViewport().getBounds());
 			viewPort.setScreenArea(context.getViewport().getScreenArea());
@@ -276,6 +276,7 @@ public class RenderingServiceImpl implements RenderingService {
 		@Override
         public void execute() {
 			StreamingRenderer renderer = new StreamingRenderer();
+			// ATTENTION renderer.setContext(mapContext);
 			renderer.setMapContent(mapContext);
 			renderer.setThreadPool(threadPool);
 			// we use OGC scale for predictable conversion between pix/m scale and relative scale

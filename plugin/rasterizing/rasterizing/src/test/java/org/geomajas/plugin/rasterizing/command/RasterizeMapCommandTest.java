@@ -75,7 +75,6 @@ public class RasterizeMapCommandTest {
 
 	@Test
 	public void testMissingMapInfo() throws Exception {
-
 		RasterizeMapRequest request = new RasterizeMapRequest();
 		ClientMapInfo mapInfo = clientApplicationInfo.getMaps().get(0);
 		request.setClientMapInfo(mapInfo);

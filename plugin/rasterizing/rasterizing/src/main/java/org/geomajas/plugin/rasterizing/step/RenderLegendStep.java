@@ -30,7 +30,7 @@ public class RenderLegendStep extends AbstractRasterizingStep {
 
 	@Override
     public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
-		MapContent mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContent.class);
+	    MapContent mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContent.class);
 		context.put(RasterizingPipelineCode.RENDERED_IMAGE, renderingService.paintLegend(mapContext));
 	}
 

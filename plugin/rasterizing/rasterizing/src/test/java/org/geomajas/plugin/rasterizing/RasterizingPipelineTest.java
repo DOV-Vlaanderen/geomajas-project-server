@@ -43,9 +43,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Tests the rasterizing pipeline used by the RasterizingController.
- *
+ * 
  * @author Jan De Moerloose
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
@@ -116,7 +116,7 @@ public class RasterizingPipelineTest {
 	public void clearSecurityContext() {
 		ThreadScopeContextHolder.clear();
 	}
-
+	
 	@Test
 	public void testTrans()  throws Exception {
 		System.out.println(CRS.decode("EPSG:4283").toWKT());
@@ -143,9 +143,9 @@ public class RasterizingPipelineTest {
 		Assert.assertEquals("", recorder.matches(CacheCategory.RASTER));
 		// find the key
 		String url = tile.getFeatureContent();
-		Assert.assertTrue(url.startsWith("http://test/layer/beans/"));
+		Assert.assertTrue(url.startsWith("http://test/rasterizing/layer/beans/"));
 		Assert.assertTrue(url.contains("?"));
-		String key = url.substring("http://test/layer/beans/".length(), url.indexOf(".png"));
+		String key = url.substring("http://test/rasterizing/layer/beans/".length(), url.indexOf(".png"));
 		Object o = cacheManager.get(layerBeans, CacheCategory.REBUILD, key);
 		Assert.assertNotNull("Missing rebuild data in cache", o);
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -175,9 +175,9 @@ public class RasterizingPipelineTest {
 		tile = vectorLayerService.getTile(metadata);
 		// find the key
 		String url = tile.getFeatureContent();
-		Assert.assertTrue(url.startsWith("http://test/layer/layerBeansPoint/"));
+		Assert.assertTrue(url.startsWith("http://test/rasterizing/layer/layerBeansPoint/"));
 		Assert.assertTrue(url.contains("?"));
-		String key = url.substring("http://test/layer/layerBeansPoint/".length(), url.indexOf(".png"));
+		String key = url.substring("http://test/rasterizing/layer/layerBeansPoint/".length(), url.indexOf(".png"));
 		Object o = cacheManager.get(layerBeansPoint, CacheCategory.RASTER, key);
 		Assert.assertNull("Unexpected raster in cache", o);
 		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Put item in cache"));
@@ -246,8 +246,7 @@ public class RasterizingPipelineTest {
 			this.response = response;
 		}
 
-		@Override
-        public void generateActual(OutputStream out) throws Exception {
+		public void generateActual(OutputStream out) throws Exception {
 			out.write(response.getContentAsByteArray());
 		}
 

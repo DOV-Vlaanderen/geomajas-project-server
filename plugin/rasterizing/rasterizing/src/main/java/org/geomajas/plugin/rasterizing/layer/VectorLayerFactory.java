@@ -103,7 +103,8 @@ public class VectorLayerFactory implements LayerFactory {
 		ClientVectorLayerInfo vectorInfo = (ClientVectorLayerInfo) clientLayerInfo;
 		VectorLayerRasterizingInfo extraInfo = (VectorLayerRasterizingInfo) vectorInfo
 				.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
-		ReferencedEnvelope areaOfInterest = mapContext.getMaxBounds();
+		// ATTENTION ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
+		ReferencedEnvelope areaOfInterest = mapContext.getViewport().getBounds();
 		VectorLayer layer = configurationService.getVectorLayer(vectorInfo.getServerLayerId());
 		// need to clone the extra info object before changing it !
 		VectorLayerRasterizingInfo rasterizingInfo = cloneInfo(extraInfo);

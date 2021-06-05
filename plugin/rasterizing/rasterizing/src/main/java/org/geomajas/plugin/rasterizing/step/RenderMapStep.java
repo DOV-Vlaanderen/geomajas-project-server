@@ -40,7 +40,7 @@ public class RenderMapStep extends AbstractRasterizingStep {
 
 	@Override
     public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
-		MapContent mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContent.class);
+	    MapContent mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContent.class);
 		RenderingHints renderingHints = context.get(RasterizingPipelineCode.RENDERING_HINTS, RenderingHints.class);
 		@SuppressWarnings("unchecked")
 		Map<Object, Object> rendererHints = context.get(RasterizingPipelineCode.RENDERER_HINTS, Map.class);
